@@ -2,16 +2,34 @@
 
 Next.js 15 (App Router, TypeScript, Tailwind v4) app that imports a **UniFi** site (ephemeral API key) or a set of **MikroTik RouterOS 7** devices (read-only REST user), normalizes everything into one sanitized, vendor-neutral `SiteDocumentationSnapshot`, and exports a paginated A4 PDF report rendered by headless Chromium. English only.
 
+## Install
+
+Built for Windows, macOS and Linux (tested on Linux so far). You need **Node.js 22.6 or later** and one of **Chrome, Chromium or Edge** (used headless for the PDF; Edge is already on Windows).
+
+1. Get the code: `git clone <repository-url>`, or on GitHub use **Code → Download ZIP** and unzip it.
+2. Install:
+   - **Windows:** double-click `install.bat`.
+   - **macOS / Linux:** `bash install.sh`
+3. Start: double-click `start.bat`, or `bash start.sh`. Then open <http://127.0.0.1:3000>.
+
+The installer checks Node and the browser, installs the dependencies and builds the app. The browser is looked for in the usual install locations (`src/lib/browser-paths.json`); set `CHROME_PATH` for anything else. If Node is missing it says where to get it (`winget install OpenJS.NodeJS.LTS` on Windows). To update, replace the folder (or `git pull`) and run the installer again.
+
+**With Docker instead** (nothing else to install; Chromium is inside the image):
+
 ```
-npm install
-npm run build && npm start                    # http://127.0.0.1:3000 (localhost only; see "Deployment")
+docker compose up -d --build      # then open http://127.0.0.1:3000
+```
+
+Either way the app listens on the local computer only, because it has no login. See "Deployment" for running it as a service on a server.
+
+Other commands:
+
+```
 npm run verify                                  # normalizer/sanitizer/identification assertions + page plans
 npm run export:demo -- http://127.0.0.1:3000 out.pdf technical clean-light mikrotik on
 npm run oui:update                              # refresh data/oui.tsv from the IEEE registries
 npm run photos:update                           # refresh UniFi product photos from techspecs.ui.com (needs Pillow)
 ```
-
-PDF export uses `puppeteer-core` with an installed Chrome/Chromium. It auto-detects common paths; set `CHROME_PATH` otherwise.
 
 ## Sources
 
@@ -141,14 +159,13 @@ The app has no login of its own, so anyone who can reach it can use whatever net
 
 ### On a server
 
-Requirements: Linux, Node.js 22.6 or later, git, and Chrome or Chromium (used headless for the PDF). The server needs to reach the devices it documents: the UniFi console on 443, RouterOS devices on their `www-ssl` port, and `api.ui.com` only for Cloud Proxy mode.
+The quickest route on a server is `docker compose up -d --build` (see "Install"). To run it as a systemd service instead you need Linux, Node.js 22.6 or later, git, and Chrome or Chromium. The server needs to reach the devices it documents: the UniFi console on 443, RouterOS devices on their `www-ssl` port, and `api.ui.com` only for Cloud Proxy mode.
 
 ```
 sudo useradd --system --create-home --home-dir /opt/unidoc-studio --shell /usr/sbin/nologin unidoc
 sudo -u unidoc git clone <repository-url> /opt/unidoc-studio/app
 cd /opt/unidoc-studio/app
-sudo -u unidoc npm ci
-sudo -u unidoc npm run build
+sudo -u unidoc bash install.sh
 sudo -u unidoc npm run verify          # optional self-check
 ```
 
@@ -172,7 +189,7 @@ Notes:
 - Run the service as an unprivileged user. Chrome's sandbox is only disabled when the process runs as root or `UNIDOC_CHROME_NO_SANDBOX=1` is set; use that variable only if Chrome refuses to start in a container or restricted host.
 - If Chrome is not found, set `CHROME_PATH` in the unit file.
 - Behind a reverse proxy, the PDF renderer still loads the report from `http://127.0.0.1:$PORT`; set `UNIDOC_INTERNAL_ORIGIN` only if the app listens somewhere else.
-- To update: `git pull && npm ci && npm run build`, then `sudo systemctl restart unidoc-studio`.
+- To update: `git pull && bash install.sh`, then `sudo systemctl restart unidoc-studio`.
 
 ### Before publishing the repository
 

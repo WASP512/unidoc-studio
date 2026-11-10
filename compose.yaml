@@ -1,0 +1,13 @@
+# UniDoc Studio in a container:
+#   docker compose up -d --build      then open http://127.0.0.1:3000
+#   docker compose down               to stop
+# The port is published on 127.0.0.1 only: the app has no login. To use it from
+# another machine, open an SSH tunnel to this host instead of changing the bind address.
+services:
+  unidoc:
+    build: .
+    image: unidoc-studio:3
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"

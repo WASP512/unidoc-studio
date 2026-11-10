@@ -12,6 +12,7 @@ import fs from "node:fs";
 import puppeteer, { type Browser } from "puppeteer-core";
 import type { ExportPayload } from "@/types/unifi-documentation";
 import { cleanConfig } from "@/lib/report-config";
+import browserPaths from "@/lib/browser-paths.json";
 import { isSnapshot, sanitizeSnapshot } from "@/lib/normalize-common";
 
 export const runtime = "nodejs";
@@ -21,20 +22,8 @@ export const maxDuration = 120;
 const MAX_BODY = 8 * 1024 * 1024;
 const NO_STORE = { "Cache-Control": "no-store, max-age=0", "X-Content-Type-Options": "nosniff" };
 
-const CHROME_CANDIDATES = [
-  process.env.PUPPETEER_EXECUTABLE_PATH,
-  process.env.CHROME_PATH,
-  "/usr/bin/google-chrome",
-  "/usr/bin/google-chrome-stable",
-  "/usr/sbin/google-chrome",
-  "/usr/bin/chromium",
-  "/usr/bin/chromium-browser",
-  "/snap/bin/chromium",
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/Applications/Chromium.app/Contents/MacOS/Chromium",
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-].filter(Boolean) as string[];
+/** Chrome, Chromium or Edge: env override first, then the usual install locations. */
+const CHROME_CANDIDATES = [process.env.PUPPETEER_EXECUTABLE_PATH, process.env.CHROME_PATH, ...browserPaths].filter(Boolean) as string[];
 
 function findChrome(): string {
   const hit = CHROME_CANDIDATES.find((p) => {
@@ -44,7 +33,7 @@ function findChrome(): string {
       return false;
     }
   });
-  if (!hit) throw new Error("No Chrome/Chromium found. Set CHROME_PATH to a Chromium-based browser binary.");
+  if (!hit) throw new Error("No Chrome, Chromium or Edge found. Install one, or set CHROME_PATH to its program file.");
   return hit;
 }
 
