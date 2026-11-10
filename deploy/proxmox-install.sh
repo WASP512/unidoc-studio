@@ -3,11 +3,11 @@
 # shell as root. It creates an unprivileged Debian container, installs the app
 # in it as a service, and prints the address and login when it is done.
 #
+#   Straight from GitHub:
+#     curl -fsSL https://raw.githubusercontent.com/WASP512/unidoc-studio/main/deploy/proxmox-install.sh | bash
+#
 #   From a copy of the repository on the host:
 #     bash deploy/proxmox-install.sh
-#
-#   Straight from GitHub (the repository is private, so a token is needed):
-#     see "Proxmox" in README.md
 #
 # Options (environment), all optional:
 #   CTID            container ID                      (default: next free ID)
@@ -20,7 +20,7 @@
 #   CT_VLAN         VLAN tag for the container's network card
 #   CT_CORES / CT_MEMORY / CT_DISK   2 cores / 2048 MB / 8 GB
 #   UNIDOC_USER / UNIDOC_PASSWORD    login (default: unidoc / a random password printed once)
-#   GITHUB_TOKEN    read-only token, only when the source is fetched from GitHub
+#   GITHUB_TOKEN    read-only token, only needed if the repository is private
 #   UNIDOC_REPO / UNIDOC_REF         WASP512/unidoc-studio / main
 set -euo pipefail
 
@@ -62,8 +62,9 @@ elif [ -n "${GITHUB_TOKEN:-}" ]; then
     curl -fsSL --config - -H "Accept: application/vnd.github+json" -o "$WORK/src.tar.gz" "https://api.github.com/repos/$REPO/tarball/$REF" ||
     die "could not download the source. Check that the token can read $REPO."
 else
-  curl -fsSL -o "$WORK/src.tar.gz" "https://api.github.com/repos/$REPO/tarball/$REF" 2>/dev/null ||
-    die "no local copy of the repository next to this script and no GITHUB_TOKEN set. The repository is private: set GITHUB_TOKEN to a read-only token, or copy the repository to this host and run deploy/proxmox-install.sh from it."
+  echo "downloading $REPO ($REF) from GitHub"
+  curl -fsSL -o "$WORK/src.tar.gz" "https://github.com/$REPO/archive/$REF.tar.gz" ||
+    die "could not download https://github.com/$REPO/archive/$REF.tar.gz. If the repository is private, set GITHUB_TOKEN to a read-only token, or copy the repository to this host and run deploy/proxmox-install.sh from it."
 fi
 tar -xzf "$WORK/src.tar.gz" -C "$WORK" --wildcards --strip-components=2 '*/deploy/provision-debian.sh' ||
   die "the source archive does not contain deploy/provision-debian.sh."

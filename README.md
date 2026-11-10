@@ -6,7 +6,7 @@ Next.js 15 (App Router, TypeScript, Tailwind v4) app that imports a **UniFi** si
 
 Built for Windows, macOS and Linux (tested on Linux so far). You need **Node.js 22.6 or later** and one of **Chrome, Chromium or Edge** (used headless for the PDF; Edge is already on Windows).
 
-1. Get the code: `git clone <repository-url>`, or on GitHub use **Code → Download ZIP** and unzip it.
+1. Get the code: `git clone https://github.com/WASP512/unidoc-studio.git`, or on [GitHub](https://github.com/WASP512/unidoc-studio) use **Code → Download ZIP** and unzip it.
 2. Install:
    - **Windows:** double-click `install.bat`.
    - **macOS / Linux:** `bash install.sh`
@@ -26,20 +26,13 @@ Either way the app listens on the local computer only, because it has no login. 
 
 Run this in the **Proxmox host shell** as root. It creates an unprivileged Debian container, installs the app in it as a service, and puts HTTPS and a login in front of it. When it finishes it prints the address, the login name and a generated password (shown once).
 
-From a copy of this repository on the host:
-
 ```
-bash deploy/proxmox-install.sh
+curl -fsSL https://raw.githubusercontent.com/WASP512/unidoc-studio/main/deploy/proxmox-install.sh | bash
 ```
 
-Straight from GitHub. The repository is private, so create a fine-grained token with read-only **Contents** access to it first; the first line asks for it without echoing or saving it:
+Or, from a copy of this repository on the host, `bash deploy/proxmox-install.sh`.
 
-```
-read -rsp "GitHub token: " GITHUB_TOKEN && export GITHUB_TOKEN && echo
-printf 'header = "Authorization: Bearer %s"\n' "$GITHUB_TOKEN" | curl -fsSL --config - -H "Accept: application/vnd.github.raw" https://api.github.com/repos/WASP512/unidoc-studio/contents/deploy/proxmox-install.sh | bash
-```
-
-Defaults: next free container ID, hostname `unidoc-studio`, bridge `vmbr0`, DHCP, 2 cores, 2 GB RAM, 8 GB disk. Override with environment variables in front of the command, for example `CT_IP=192.168.1.50/24 CT_GATEWAY=192.168.1.1 CT_VLAN=20 bash deploy/proxmox-install.sh`; the full list is at the top of the script. Give the container a fixed address (static, or a DHCP reservation): the certificate is issued for the address it has at install time.
+Defaults: next free container ID, hostname `unidoc-studio`, bridge `vmbr0`, DHCP, 2 cores, 2 GB RAM, 8 GB disk. Override with environment variables in front of the command, for example `curl -fsSL <url> | CT_IP=192.168.1.50/24 CT_GATEWAY=192.168.1.1 CT_VLAN=20 bash`; the full list is at the top of the script. Give the container a fixed address (static, or a DHCP reservation): the certificate is issued for the address it has at install time.
 
 The same installer works on any Debian 12 or 13 machine without Proxmox: `bash deploy/provision-debian.sh <source.tar.gz>` as root.
 
@@ -195,7 +188,7 @@ The quickest route on a server is `docker compose up -d --build` (see "Install")
 
 ```
 sudo useradd --system --create-home --home-dir /opt/unidoc-studio --shell /usr/sbin/nologin unidoc
-sudo -u unidoc git clone <repository-url> /opt/unidoc-studio/app
+sudo -u unidoc git clone https://github.com/WASP512/unidoc-studio.git /opt/unidoc-studio/app
 cd /opt/unidoc-studio/app
 sudo -u unidoc bash install.sh
 sudo -u unidoc npm run verify          # optional self-check
