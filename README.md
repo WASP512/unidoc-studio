@@ -22,6 +22,38 @@ docker compose up -d --build      # then open http://127.0.0.1:3000
 
 Either way the app listens on the local computer only, because it has no login. See "Deployment" for running it as a service on a server.
 
+### Proxmox (one step)
+
+Run this in the **Proxmox host shell** as root. It creates an unprivileged Debian container, installs the app in it as a service, and puts HTTPS and a login in front of it. When it finishes it prints the address, the login name and a generated password (shown once).
+
+From a copy of this repository on the host:
+
+```
+bash deploy/proxmox-install.sh
+```
+
+Straight from GitHub. The repository is private, so create a fine-grained token with read-only **Contents** access to it first; the first line asks for it without echoing or saving it:
+
+```
+read -rsp "GitHub token: " GITHUB_TOKEN && export GITHUB_TOKEN && echo
+printf 'header = "Authorization: Bearer %s"\n' "$GITHUB_TOKEN" | curl -fsSL --config - -H "Accept: application/vnd.github.raw" https://api.github.com/repos/WASP512/unidoc-studio/contents/deploy/proxmox-install.sh | bash
+```
+
+Defaults: next free container ID, hostname `unidoc-studio`, bridge `vmbr0`, DHCP, 2 cores, 2 GB RAM, 8 GB disk. Override with environment variables in front of the command, for example `CT_IP=192.168.1.50/24 CT_GATEWAY=192.168.1.1 CT_VLAN=20 bash deploy/proxmox-install.sh`; the full list is at the top of the script. Give the container a fixed address (static, or a DHCP reservation): the certificate is issued for the address it has at install time.
+
+The same installer works on any Debian 12 or 13 machine without Proxmox: `bash deploy/provision-debian.sh <source.tar.gz>` as root.
+
+To update an existing container, copy a new source archive into it and run the installer again; the login is kept:
+
+```
+git pull && git archive --format=tar.gz --prefix=unidoc-studio/ -o unidoc-studio.tar.gz HEAD
+pct push <CTID> unidoc-studio.tar.gz /root/unidoc-src.tar.gz
+pct push <CTID> deploy/provision-debian.sh /root/provision-debian.sh
+pct exec <CTID> -- bash /root/provision-debian.sh /root/unidoc-src.tar.gz
+```
+
+Tested: the in-container installer on Debian 12 and 13 containers (service start, HTTPS login, PDF export, re-run). The Proxmox part (`pct create` and friends) has only been dry-run against stand-in commands, not on a Proxmox host.
+
 Other commands:
 
 ```
