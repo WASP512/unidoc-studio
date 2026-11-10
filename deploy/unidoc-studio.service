@@ -1,0 +1,27 @@
+# systemd unit for UniDoc Studio. Adjust User, WorkingDirectory and the npm path
+# (`command -v npm`) to match the server, then:
+#   sudo cp deploy/unidoc-studio.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now unidoc-studio
+#
+# The app has no login. It listens on 127.0.0.1 only; reach it through an SSH
+# tunnel (ssh -L 3000:127.0.0.1:3000 <server>) or an authenticating reverse proxy.
+[Unit]
+Description=UniDoc Studio (network documentation)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=unidoc
+Group=unidoc
+WorkingDirectory=/opt/unidoc-studio/app
+Environment=NODE_ENV=production
+Environment=PORT=3000
+# Uncomment if Chrome/Chromium is not in a standard location:
+#Environment=CHROME_PATH=/usr/bin/chromium
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans-app: var(--font-report), "Open Sans", "Liberation Sans", Arial, sans-serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans-app);
+  --font-mono: var(--font-report-mono), "Source Code Pro", "DejaVu Sans Mono", monospace;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans-app);
+  color: #0f172a;
+  background: #eef1f5;
+}
+
+/* ------------------------------------------------------------------ report */
+
+.unidoc-report {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-kerning: normal;
+}
+
+.unidoc-report * {
+  box-sizing: border-box;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+/* print surface (/print, rendered by headless Chrome) */
+.print-surface {
+  background: #ffffff;
+}
+.print-surface .report-page {
+  box-shadow: none !important;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  .unidoc-report {
+    gap: 0 !important;
+  }
+  .report-page {
+    box-shadow: none !important;
+    break-after: page;
+    break-inside: avoid;
+  }
+  .report-page:last-child {
+    break-after: auto;
+  }
+}

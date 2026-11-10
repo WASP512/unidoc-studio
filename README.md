@@ -1,0 +1,198 @@
+# UniDoc Studio
+
+Next.js 15 (App Router, TypeScript, Tailwind v4) app that imports a **UniFi** site (ephemeral API key) or a set of **MikroTik RouterOS 7** devices (read-only REST user), normalizes everything into one sanitized, vendor-neutral `SiteDocumentationSnapshot`, and exports a paginated A4 PDF report rendered by headless Chromium. English only.
+
+```
+npm install
+npm run build && npm start                    # http://127.0.0.1:3000 (localhost only; see "Deployment")
+npm run verify                                  # normalizer/sanitizer/identification assertions + page plans
+npm run export:demo -- http://127.0.0.1:3000 out.pdf technical clean-light mikrotik on
+npm run oui:update                              # refresh data/oui.tsv from the IEEE registries
+npm run photos:update                           # refresh UniFi product photos from techspecs.ui.com (needs Pillow)
+```
+
+PDF export uses `puppeteer-core` with an installed Chrome/Chromium. It auto-detects common paths; set `CHROME_PATH` otherwise.
+
+## Sources
+
+| Mode | Access | Data leaves the LAN? |
+|---|---|---|
+| UniFi Cloud Proxy | Site Manager key → `api.ui.com` Cloud Connector | Yes, through Ubiquiti's cloud |
+| UniFi Direct Local | Local Network key → `https://<console>/proxy/network/…` | No |
+| MikroTik RouterOS | Username/password (Basic auth) → `https://<device>/rest/…` on each device | No |
+
+Where the capture must not leave the site (for example a network subject to CJIS or similar rules), use Direct Local or MikroTik: both stay on the LAN.
+
+## Report structure
+
+| Page | Content |
+|---|---|
+| 1 | **Cover**: site, client, scan and issue dates, device/network/AP/client counts, client logo and contact, integrator logo and contact |
+| 2 | **Contents** with exact page numbers (clickable in the PDF, which also carries bookmarks), document information, status legend, and the Introduction / Additional notes |
+| 3 | Infrastructure summary, Internet / ISP. With more than one WAN, a **WAN links** table lists each link's role, address, ISP and state |
+| 4 | Network topology |
+| 5+ | Inventory, gateway, switches, ports (including the UniFi gateway's own ports), access points, Wi-Fi, networks, DHCP, clients, health, VPN, firewall, device identification |
+
+Sections run on from one another; a heading is never left at the foot of a page, tables of up to 8 rows are not split, and longer tables repeat their header and never leave fewer than 3 rows behind. Page numbers in the contents come from the same page plan the renderer uses, and `npm run verify` checks them.
+
+Loading the MikroTik demo fills in a fictional client and integrator so the cover and notes are populated. Those details are dropped when the next site is loaded.
+
+## What the MikroTik import adds over UniFi
+
+The report shares the same layout, themes, paginator and PDF path. For RouterOS it also documents:
+
+- **Topology** built from LLDP/CDP/MNDP neighbors on every device (breadth-first from the gateway), CAPsMAN remote CAPs, and third-party switches seen only via LLDP (drawn dashed, marked *Not managed*). Uplinks are labelled with the actual interfaces and link speed (`ether20 ↔ gi10 · 1 Gbit/s`).
+- **Per-port table** for every managed router and switch: link, speed, PVID, untagged/tagged VLANs from the bridge VLAN table, PoE status and watts, link partner or learned-MAC count, SFP module, interface comment.
+- **Bridge VLAN table** and the full **neighbor table**.
+- **Clients with exact switch port and VLAN** from the bridge host table (deepest edge port wins; MACs seen only on trunks become *undetermined*), wireless clients from the CAPsMAN/wifi registration table, plus ARP and DHCP leases. Static leases seen within the window (default 30 days) are listed as **Recently seen**.
+- **WAN** from interface lists, DHCP/PPPoE client, default route, `/ip/cloud` public address and Netwatch latency/loss.
+- **Firewall filter + NAT** rules (match summarised per rule) and **WireGuard interfaces and peers** (last handshake, allowed addresses).
+- Device health: CPU, memory, temperature, RouterOS version, serial numbers.
+
+RouterOS has no ISP speed test or availability history, so those UniFi cells are replaced with link rate, default gateway and the Netwatch probe target.
+
+### RouterOS setup
+
+```
+/user group add name=unidoc-ro policy=read,api,rest-api,!write,!policy,!sensitive,!ftp,!reboot
+/user add name=unidoc group=unidoc-ro address=<workstation-ip>/32 password=<long-random>
+/ip service set www-ssl certificate=<cert> disabled=no address=<mgmt-subnet>
+```
+
+Without the `sensitive` policy RouterOS hides keys itself; UniDoc strips them again server-side. Plain HTTP (`www`) is refused unless explicitly allowed in the UI.
+
+## UniFi product photos
+
+Topology cards show the manufacturer's product photo for UniFi devices: 132 models (cloud gateways, switching, Wi-Fi) from the listing pages of techspecs.ui.com, trimmed and bundled as WebP in `public/hardware/unifi/` with a manifest in `src/data/unifi-photos.json`. Reports never contact ui.com at runtime.
+
+Devices are matched by the controller's internal model code (`USPM48P`, `UDMPROSE`, …), then by model name. Unmatched models, and all MikroTik or third-party gear, keep the drawn SVG illustration.
+
+The photos carry no packaging, callouts or overlaid text:
+
+- UX7's listing photo shows the retail box, so its plain front view from the same Ubiquiti product CDN is used instead.
+- Devices with a front display (UX, UX7, UCG Max/Ultra/Fiber, UDR, UDR7, UDR-5G-Max, UDW, UTR, UTR-LR, AirWire) have the screen switched off and the printed model name removed, so no screen readouts appear.
+- Rack faceplates still carry their tiny factory markings (model name under the display, port numbers). These are a few pixels high and not readable at report size.
+
+The photos are Ubiquiti's. Fine for internal documentation of your own equipment; don't publish the repository with them.
+
+## Device identification
+
+An optional report section (on by default, every template) lists **every device seen**: connected now plus recently seen. For each device it shows vendor, type, OS/model, where it is attached, a confidence level and the **evidence** behind the result.
+
+Identification is **passive**: nothing is scanned. Signals used:
+
+- the IEEE OUI registry (MA-L/MA-M/MA-S, ~54k prefixes, bundled in `data/oui.tsv`, server-side only);
+- whether the MAC is randomized/private;
+- DHCP hostname and admin-assigned names (UniFi alias, RouterOS lease comment);
+- DHCP option 60 vendor class (`MSFT 5.0`, `android-dhcp-14`, `dhcpcd…BCM2835`, …);
+- LLDP/CDP/MNDP system description (e.g. LLDP-MED phones);
+- the controller's vendor field.
+
+Results are an indication, not a verified inventory. A randomized-MAC phone with no hostname will rightly come out as *Unknown*.
+
+## File tree
+
+```
+data/oui.tsv                         IEEE vendor prefixes (npm run oui:update)
+src/
+  app/
+    page.tsx                         3-step studio (import → customize → preview/export)
+    print/page.tsx                   print surface loaded by headless Chrome
+    api/unifi/{discover,import}      UniFi connector routes
+    api/mikrotik/{discover,import}   RouterOS connector routes (probe, neighbor suggestions, import)
+    api/demo/route.ts                demo sites, normalized server-side (uses the OUI registry)
+    api/export-pdf/route.ts          puppeteer-core → application/pdf
+  components/report/
+    ReportDocument.tsx               A4 pages, chrome, all tables (vendor-aware), identification section
+    NetworkTopologySection.tsx       5-lane swimlane topology, undetermined block, device table
+    HardwareIllustrations.tsx        UniFi product photos; SVG for MikroTik RB/CRS/cAP and generic gear
+    ReportTable.tsx                  fixed-height table primitive, status dots, action pills
+  lib/
+    transport.ts                     server-only HTTP (timeouts, size caps, TLS fingerprint pinning)
+    unifi-client.ts / mikrotik-client.ts   server-only connectors
+    unifi-normalize.ts / mikrotik-normalize.ts   vendor normalizers
+    normalize-common.ts              sanitizer, formatters, finalizeSnapshot (KPIs + identification)
+    identify.ts, oui.ts              passive device identification
+    paginate.ts                      deterministic paginator (paginateSnapshot)
+    strings.ts, themes.ts, markdown.tsx
+  data/
+    mock-raw-payloads.ts             UniFi demo payloads (fictional "Demo City Hall" site, planted fake secrets)
+    mock-mikrotik-payloads.ts        RouterOS demo payloads (fictional branch, documentation-range IPs)
+    mock-snapshot.ts                 demo snapshot builders
+  types/unifi-documentation.ts       vendor-neutral model
+scripts/
+  verify-mock.ts, plan-pages.ts, export-demo-pdf.ts, update-oui.ts
+  fetch_unifi_photos.py              techspecs.ui.com photos → public/hardware/unifi (+ screen/wordmark clean-up)
+  mock-unifi-server.ts               mock UniFi OS console (HTTPS) + optional Site Manager mock
+  mock-routeros-server.ts            mock RouterOS REST API (HTTPS, Basic auth), one port per device
+```
+
+## Credential handling
+
+- Keys and RouterOS credentials exist only in React state and password inputs. They are sent only as headers (`X-UniFi-Api-Key`, `X-RouterOS-Credentials` = base64 `user:password`) and cleared after import, on cancel, and on `pagehide`/`beforeunload`.
+- Route handlers hold credentials for one request, never log them, and scrub them from error text. Responses are `Cache-Control: no-store`.
+- Payloads are sanitized as soon as they arrive (per device for RouterOS): all `x_*` fields plus password/PSK/secret/token/private-key/webhook patterns, including RouterOS names like `private-key`, `preshared-key`, `security.passphrase`. A second pass replaces any string that contains a removed secret value. Only removed field *names* are kept, in `meta.sanitizedFields`.
+- The PDF route sanitizes again, whitelists config fields, and injects the payload with `evaluateOnNewDocument` (never a URL). Chrome may only load this app's own origin and `data:` URIs.
+- LAN devices (UniFi Direct Local, RouterOS) usually present self-signed certificates, so chain validation is relaxed per connector, never globally. To restore protection against an interposed device, **pin the certificate**: discovery shows each device's SHA-256 fingerprint; paste it into the pin field. With pins set, a credential-free TLS handshake checks the fingerprint *before* any request carrying the key or password is sent.
+
+## Deployment
+
+The app has no login of its own, so anyone who can reach it can use whatever network access the host has. `npm start` and `npm run dev` therefore listen on `127.0.0.1` only. Do not change that to a routable address; put an SSH tunnel or an authenticating reverse proxy in front instead.
+
+### On a server
+
+Requirements: Linux, Node.js 22.6 or later, git, and Chrome or Chromium (used headless for the PDF). The server needs to reach the devices it documents: the UniFi console on 443, RouterOS devices on their `www-ssl` port, and `api.ui.com` only for Cloud Proxy mode.
+
+```
+sudo useradd --system --create-home --home-dir /opt/unidoc-studio --shell /usr/sbin/nologin unidoc
+sudo -u unidoc git clone <repository-url> /opt/unidoc-studio/app
+cd /opt/unidoc-studio/app
+sudo -u unidoc npm ci
+sudo -u unidoc npm run build
+sudo -u unidoc npm run verify          # optional self-check
+```
+
+Install the service (check `User`, `WorkingDirectory` and the npm path in the unit file first):
+
+```
+sudo cp deploy/unidoc-studio.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now unidoc-studio
+curl -sI http://127.0.0.1:3000 | head -1     # expect HTTP/1.1 200 OK
+```
+
+Open it from your own machine through an SSH tunnel, then browse to `http://127.0.0.1:3000`:
+
+```
+ssh -L 3000:127.0.0.1:3000 <user>@<server>
+```
+
+Notes:
+
+- Run the service as an unprivileged user. Chrome's sandbox is only disabled when the process runs as root or `UNIDOC_CHROME_NO_SANDBOX=1` is set; use that variable only if Chrome refuses to start in a container or restricted host.
+- If Chrome is not found, set `CHROME_PATH` in the unit file.
+- Behind a reverse proxy, the PDF renderer still loads the report from `http://127.0.0.1:$PORT`; set `UNIDOC_INTERNAL_ORIGIN` only if the app listens somewhere else.
+- To update: `git pull && npm ci && npm run build`, then `sudo systemctl restart unidoc-studio`.
+
+### Before publishing the repository
+
+`bash scripts/check-publishable.sh [pattern-file]` fails if a key or certificate is tracked, if a sample PDF contains a secret marker, or if tracked text or a sample PDF matches a pattern from your own (uncommitted) list of real-site names and addresses. Both demo sites are fictional; never commit a snapshot or PDF from a real network.
+
+## UniFi API notes
+
+- **Cloud Connector path.** `https://api.ui.com/v1/connector/consoles/{hostId}/network/<path>` (executed by the console as `/proxy/network/<path>`). Limits: 100 requests/min per console, 25 s per request, 10 MB body, console firmware ≥ 5.0.3.
+- **ISP metrics.** `GET /v1/isp-metrics/5m?duration=24h`. Direct Local falls back to `stat/health` → `uptime_stats.WAN`.
+- **Client history.** `POST stat/alluser {type:"all", conn:"all", within:<hours>}` adds recently-seen clients.
+- **Legacy endpoints through the Cloud Connector.** Ubiquiti documents the connector against the Network *integration* API; whether every legacy `api/s/...` and `v2/...` endpoint is accepted depends on firmware. Each endpoint's result shows in the Import report; failures are non-fatal except `stat/device`.
+
+## Testing without hardware
+
+```
+openssl req -x509 -newkey rsa:2048 -nodes -days 2 -subj /CN=lab.local -keyout /tmp/l.key -out /tmp/l.crt
+MOCK_KEY=<16+ char test key> npm run mock:console -- /tmp/l.key /tmp/l.crt 8443 --cloud 8780
+MOCK_ROS_USER=unidoc MOCK_ROS_PASS=<test password> npm run mock:routeros -- /tmp/l.crt /tmp/l.key 8731
+# UniFi Direct Local: 127.0.0.1:8443 · UniFi Cloud: start the app with UNIDOC_SITE_MANAGER_BASE=http://127.0.0.1:8780
+# MikroTik: devices 127.0.0.1:8731, :8732, :8733
+```
+
+The RouterOS field names in the normalizer follow the v7 REST documentation; they have only been exercised against the mock, not a physical device yet.

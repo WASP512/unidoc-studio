@@ -1,0 +1,1202 @@
+[
+ {
+  "sku": "E7",
+  "name": "E7",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/e7",
+  "source": "https://cdn.ecomm.ui.com/products/93ae773e-8969-4889-8591-2c227a31ac3f/09ff1a3a-0ce6-43ad-8188-607086944059.png",
+  "file": "/hardware/unifi/E7.webp",
+  "aspect": 0.707
+ },
+ {
+  "sku": "E7-Audience",
+  "name": "E7 Audience",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/e7-audience-us",
+  "source": "https://cdn.ecomm.ui.com/products/993e484e-4058-49eb-9cdb-4b5e89aec544/3a623234-838e-4663-81d5-0504347980eb.png",
+  "file": "/hardware/unifi/E7-Audience.webp",
+  "aspect": 1.588
+ },
+ {
+  "sku": "E7-Audience-Indoor",
+  "name": "E7 Audience Indoor",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/e7-audience-indoor",
+  "source": "https://cdn.ecomm.ui.com/products/dc297e03-3266-43ee-963f-01c2234657a1/39a43dd2-2a31-463b-b125-ddcdcda5050d.png",
+  "file": "/hardware/unifi/E7-Audience-Indoor.webp",
+  "aspect": 1.753
+ },
+ {
+  "sku": "E7-Campus",
+  "name": "E7 Campus",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/e7-campus-us",
+  "source": "https://cdn.ecomm.ui.com/products/67bc019d-eb07-4427-8989-b15bfd43cb5f/cbf37b3b-14d3-46f9-9017-0bbf83ec9444.png",
+  "file": "/hardware/unifi/E7-Campus.webp",
+  "aspect": 0.598
+ },
+ {
+  "sku": "E7-Campus-Indoor",
+  "name": "E7 Campus Indoor",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/e7-campus-indoor",
+  "source": "https://cdn.ecomm.ui.com/products/996cbaaa-198b-4f11-92a3-78ffea4c4787/c877a283-3b06-474d-abad-22fa66b73839.png",
+  "file": "/hardware/unifi/E7-Campus-Indoor.webp",
+  "aspect": 0.599
+ },
+ {
+  "sku": "U-AirWire",
+  "name": "AirWire",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u-airwire",
+  "source": "https://cdn.ecomm.ui.com/products/5c4634fe-2a7f-4a94-918e-04eb3b219f87/88388742-ff82-44f8-b6f2-c6e7b343f2ea.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/U-AirWire.webp",
+  "aspect": 1.55
+ },
+ {
+  "sku": "U6+",
+  "name": "U6+",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-plus",
+  "source": "https://cdn.ecomm.ui.com/products/6d5c6141-e2e9-416a-b789-53e59416bb1a/853bc73b-f65b-4e59-a171-75c9a4a4615e.png",
+  "file": "/hardware/unifi/U6-Plus.webp",
+  "aspect": 0.93
+ },
+ {
+  "sku": "U6-Enterprise",
+  "name": "U6 Enterprise",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-enterprise",
+  "source": "https://cdn.ecomm.ui.com/products/f9118c0f-060b-4fd7-99ce-ace671c7a1fe/6f2a87a4-193d-43e0-b253-aa0ea0795694.png",
+  "file": "/hardware/unifi/U6-Enterprise.webp",
+  "aspect": 0.918
+ },
+ {
+  "sku": "U6-Enterprise-IW",
+  "name": "U6 Enterprise In-Wall",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-enterprise-iw",
+  "source": "https://cdn.ecomm.ui.com/products/f433d754-48f1-418e-b9cb-5cbdad450cde/55fb0115-6a19-4d49-b1b8-5b52e00ad4d9.png",
+  "file": "/hardware/unifi/U6-Enterprise-IW.webp",
+  "aspect": 1.019
+ },
+ {
+  "sku": "U6-Extender",
+  "name": "U6 Extender",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-extender",
+  "source": "https://cdn.ecomm.ui.com/products/25250ea7-8a67-4ddf-855b-d712a61c62a4/833afef7-a129-4218-9f1f-1ede30b42a58.png",
+  "file": "/hardware/unifi/U6-Extender.webp",
+  "aspect": 0.617
+ },
+ {
+  "sku": "U6-IW",
+  "name": "U6 In-Wall",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-iw",
+  "source": "https://cdn.ecomm.ui.com/products/9e487835-2aa9-4813-b210-732744a2884a/cac2e05e-2e46-4d47-84b2-7e3bb7d7ca1a.png",
+  "file": "/hardware/unifi/U6-IW.webp",
+  "aspect": 0.765
+ },
+ {
+  "sku": "U6-LR",
+  "name": "U6 Long-Range",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-lr",
+  "source": "https://cdn.ecomm.ui.com/products/d8fee47d-b53e-4a86-a5cb-cf2f6ab1c5ef/4f1f5856-05c2-4989-970e-6751e6af7eb9.png",
+  "file": "/hardware/unifi/U6-LR.webp",
+  "aspect": 0.932
+ },
+ {
+  "sku": "U6-Mesh",
+  "name": "U6 Mesh",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-mesh",
+  "source": "https://cdn.ecomm.ui.com/products/7b8f8da5-d684-4170-be1f-71b53af8d7f9/fdce5345-80e9-4edd-bf5b-93cf9141649e.png",
+  "file": "/hardware/unifi/U6-Mesh.webp",
+  "aspect": 0.35
+ },
+ {
+  "sku": "U6-Mesh-Pro",
+  "name": "U6 Mesh Pro",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-mesh-pro",
+  "source": "https://cdn.ecomm.ui.com/products/34b89d08-9ac2-4e83-8d83-10ca6a7d83a9/f26e0cfe-585c-43b8-819e-dbf047578afd.png",
+  "file": "/hardware/unifi/U6-Mesh-Pro.webp",
+  "aspect": 0.546
+ },
+ {
+  "sku": "U6-Pro",
+  "name": "U6 Pro",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u6-pro",
+  "source": "https://cdn.ecomm.ui.com/products/8e88b222-7a55-4cf0-8677-ae9b6347fe84/e16aa122-b5e5-4ffb-9f1a-27ee14d9ab3d.png",
+  "file": "/hardware/unifi/U6-Pro.webp",
+  "aspect": 0.918
+ },
+ {
+  "sku": "U7-IW",
+  "name": "U7 In-Wall",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-iw",
+  "source": "https://cdn.ecomm.ui.com/products/9ea6158e-bc26-4ac7-946a-55eca465b059/566b1098-3514-46b6-8aee-4fde454d1205.png",
+  "file": "/hardware/unifi/U7-IW.webp",
+  "aspect": 1.103
+ },
+ {
+  "sku": "U7-Industrial",
+  "name": "U7 Industrial",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-industrial",
+  "source": "https://cdn.ecomm.ui.com/products/27c2f194-28fc-4853-b39f-2c387d0c0669/148df734-e1b3-49fe-b2ad-284ec3f44fb0.png",
+  "file": "/hardware/unifi/U7-Industrial.webp",
+  "aspect": 1.103
+ },
+ {
+  "sku": "U7-LR",
+  "name": "U7 Long-Range",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-lr",
+  "source": "https://cdn.ecomm.ui.com/products/7455fa2b-3074-47a0-b82f-a2cd701d4a8f/06752627-8180-42ea-afe3-4cfac57c10eb.png",
+  "file": "/hardware/unifi/U7-LR.webp",
+  "aspect": 0.934
+ },
+ {
+  "sku": "U7-Lite",
+  "name": "U7 Lite",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-lite",
+  "source": "https://cdn.ecomm.ui.com/products/253cc208-4b09-4b2e-9d1a-7aa1e8f93507/49241c96-878f-4e40-8541-c2e89c1c5e6e.png",
+  "file": "/hardware/unifi/U7-Lite.webp",
+  "aspect": 0.903
+ },
+ {
+  "sku": "U7-Mesh",
+  "name": "U7 Mesh",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-mesh",
+  "source": "https://cdn.ecomm.ui.com/products/3d6c28a3-3ba8-468c-b084-a7daf9d91d31/dd12539d-4c7e-4246-af89-b322f0ab7128.png",
+  "file": "/hardware/unifi/U7-Mesh.webp",
+  "aspect": 0.292
+ },
+ {
+  "sku": "U7-Outdoor",
+  "name": "U7 Outdoor",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-outdoor",
+  "source": "https://cdn.ecomm.ui.com/products/62cc30b7-9559-480f-9668-b9edf40c0772/f2010c22-ff34-48e5-81f4-e7dad275d3c0.png",
+  "file": "/hardware/unifi/U7-Outdoor.webp",
+  "aspect": 0.725
+ },
+ {
+  "sku": "U7-Pro",
+  "name": "U7 Pro",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro",
+  "source": "https://cdn.ecomm.ui.com/products/fa8dd4e4-36c8-4c79-a928-22c7bff2ce29/ab5bc8a4-6135-402e-a695-e3ea5e16d3e6.png",
+  "file": "/hardware/unifi/U7-Pro.webp",
+  "aspect": 0.918
+ },
+ {
+  "sku": "U7-Pro-Max",
+  "name": "U7 Pro Max",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro-max",
+  "source": "https://cdn.ecomm.ui.com/products/350070a0-ae43-431b-b052-8e849c3b0a75/bad94693-bc54-4ab4-b060-9b972401941c.png",
+  "file": "/hardware/unifi/U7-Pro-Max.webp",
+  "aspect": 0.918
+ },
+ {
+  "sku": "U7-Pro-Outdoor",
+  "name": "U7 Pro Outdoor",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro-outdoor-us",
+  "source": "https://cdn.ecomm.ui.com/products/29714d60-88e2-482c-aded-e0c456b51f98/277445cb-7d35-4be0-b267-1331067895bf.png",
+  "file": "/hardware/unifi/U7-Pro-Outdoor.webp",
+  "aspect": 0.724
+ },
+ {
+  "sku": "U7-Pro-Wall",
+  "name": "U7 Pro Wall",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro-wall",
+  "source": "https://cdn.ecomm.ui.com/products/7dacb4f6-b703-4154-9264-784f2eb0dbda/f1cb65a5-c557-4e02-bcbb-090502a95b84.png",
+  "file": "/hardware/unifi/U7-Pro-Wall.webp",
+  "aspect": 0.724
+ },
+ {
+  "sku": "U7-Pro-XG",
+  "name": "U7 Pro XG",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro-xg",
+  "source": "https://cdn.ecomm.ui.com/products/a433b9e5-4dd1-4784-adf8-9d12bcba4c87/6e27f358-5455-48cc-91be-89d457b5e70f.png",
+  "file": "/hardware/unifi/U7-Pro-XG.webp",
+  "aspect": 1.248
+ },
+ {
+  "sku": "U7-Pro-XG-Wall",
+  "name": "U7 Pro XG Wall",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro-xg-wall",
+  "source": "https://cdn.ecomm.ui.com/products/c7f7e7f9-b357-44ea-8d30-1191140face2/6646484f-bded-4032-8826-93f919d950ec.png",
+  "file": "/hardware/unifi/U7-Pro-XG-Wall.webp",
+  "aspect": 0.861
+ },
+ {
+  "sku": "U7-Pro-XGS",
+  "name": "U7 Pro XGS",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/u7-pro-xgs",
+  "source": "https://cdn.ecomm.ui.com/products/1604d78c-6e51-4fe8-a8e5-0110cc332ba0/d7f782a0-ab43-4686-8281-057bdc6843a0.png",
+  "file": "/hardware/unifi/U7-Pro-XGS.webp",
+  "aspect": 1.257
+ },
+ {
+  "sku": "UAP-AC-IW",
+  "name": "AC In-Wall",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uap-ac-iw",
+  "source": "https://cdn.ecomm.ui.com/products/9de03237-a16a-47a4-9c75-db8051799b46/4d2c71cc-e60c-4821-a988-44b5cf7b829a.png",
+  "file": "/hardware/unifi/UAP-AC-IW.webp",
+  "aspect": 0.696
+ },
+ {
+  "sku": "UAP-AC-LITE",
+  "name": "AC Lite",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uap-ac-lite",
+  "source": "https://cdn.ecomm.ui.com/products/30ea4cce-588f-40dc-8ce4-a15b02fc43e9/e952f974-80b0-4283-be5a-12115e21a63c.png",
+  "file": "/hardware/unifi/UAP-AC-LITE.webp",
+  "aspect": 0.934
+ },
+ {
+  "sku": "UAP-AC-LR",
+  "name": "AC Long-Range",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/unifi-ac-lr",
+  "source": "https://cdn.ecomm.ui.com/products/d85a6d0f-37b1-4e14-83dd-53f176ae3942/279351b1-fef0-4722-95b6-63feb169e249.png",
+  "file": "/hardware/unifi/UAP-AC-LR.webp",
+  "aspect": 0.918
+ },
+ {
+  "sku": "UAP-AC-M",
+  "name": "AC Mesh",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uap-ac-mesh",
+  "source": "https://cdn.ecomm.ui.com/products/256e298c-7a20-4d6a-983f-7445e6cb98df/5ebd628b-79bd-471a-b779-e5b6725f8086.png",
+  "file": "/hardware/unifi/UAP-AC-M.webp",
+  "aspect": 0.601
+ },
+ {
+  "sku": "UAP-AC-M-PRO",
+  "name": "AC Mesh Pro",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uap-ac-mesh-pro",
+  "source": "https://cdn.ecomm.ui.com/products/061a3bec-9109-4b72-aeaa-e3ee095a8403/df143481-4b11-49b2-a21f-01634d1206ff.png",
+  "file": "/hardware/unifi/UAP-AC-M-PRO.webp",
+  "aspect": 0.494
+ },
+ {
+  "sku": "UAP-AC-PRO",
+  "name": "AC Pro",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uap-ac-pro",
+  "source": "https://cdn.ecomm.ui.com/products/28be41e3-da0e-4aae-98ce-5978cc61726c/8cc6250e-6c3b-4da2-8217-ae6422a5e153.png",
+  "file": "/hardware/unifi/UAP-AC-PRO.webp",
+  "aspect": 0.918
+ },
+ {
+  "sku": "UAP-IW-HD",
+  "name": "In-Wall HD",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uap-iw-hd",
+  "source": "https://cdn.ecomm.ui.com/products/7388f491-3118-4f8d-a350-de2e09b3367a/608a8fdd-49a2-4e0a-8fe8-1e479427429a.png",
+  "file": "/hardware/unifi/UAP-IW-HD.webp",
+  "aspect": 0.694
+ },
+ {
+  "sku": "UBB",
+  "name": "Building Bridge",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/ubb",
+  "source": "https://cdn.ecomm.ui.com/products/d57f7ab7-4c81-4c88-a848-6f85c49d0a27/c3ec370d-3651-4de7-b1b8-84ee63709874.png",
+  "file": "/hardware/unifi/UBB.webp",
+  "aspect": 0.98
+ },
+ {
+  "sku": "UBB-XG",
+  "name": "Building Bridge XG",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/ubb-xg",
+  "source": "https://cdn.ecomm.ui.com/products/7d53794c-09ca-4ed2-81c6-3c410ed37398/38e3d67d-46c0-4efa-9426-c4d3fc18ecd9.png",
+  "file": "/hardware/unifi/UBB-XG.webp",
+  "aspect": 0.989
+ },
+ {
+  "sku": "UDB",
+  "name": "Device Bridge",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/udb",
+  "source": "https://cdn.ecomm.ui.com/products/a2bd3a3b-2094-42b4-abd6-b0ea32bfd5f3/43e44a8d-3921-4cfb-b579-6b0fac0076cf.png",
+  "file": "/hardware/unifi/UDB.webp",
+  "aspect": 0.528
+ },
+ {
+  "sku": "UDB-IoT",
+  "name": "Device Bridge IoT",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/udb-iot",
+  "source": "https://cdn.ecomm.ui.com/products/0847824f-f6ce-4aeb-b811-f30d134da52f/7f1bb937-1dcc-45c2-992c-90d7c1fecff1.png",
+  "file": "/hardware/unifi/UDB-IoT.webp",
+  "aspect": 0.42
+ },
+ {
+  "sku": "UDB-Pro",
+  "name": "Device Bridge Pro",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/udb-pro",
+  "source": "https://cdn.ecomm.ui.com/products/aa234654-23a1-49f8-89af-0eb41a2aec90/89dbcd7d-a21e-41c9-8af5-37937195cfdd.png",
+  "file": "/hardware/unifi/UDB-Pro.webp",
+  "aspect": 0.928
+ },
+ {
+  "sku": "UDB-Pro-Sector",
+  "name": "Device Bridge Pro Sector",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/udb-pro-sector",
+  "source": "https://cdn.ecomm.ui.com/products/7f573ad6-b76c-4219-affa-5c34b4dac03b/12851e50-1461-4e66-b1fb-0a71f09ddfa0.png",
+  "file": "/hardware/unifi/UDB-Pro-Sector.webp",
+  "aspect": 0.553
+ },
+ {
+  "sku": "UDB-Switch",
+  "name": "Device Bridge Switch",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/udb-switch",
+  "source": "https://cdn.ecomm.ui.com/products/c0d3fc51-9532-4cdf-89f1-631324bf8e4e/7c0debec-7666-412e-9131-1851fcab46bb.png",
+  "file": "/hardware/unifi/UDB-Switch.webp",
+  "aspect": 3.184
+ },
+ {
+  "sku": "UK-Ultra",
+  "name": "Swiss Army Knife",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uk-ultra",
+  "source": "https://cdn.ecomm.ui.com/products/eecac847-6407-4539-bbf0-03d0f8f3232f/9573d154-2b35-40df-8491-819c2a7eb244.png",
+  "file": "/hardware/unifi/UK-Ultra.webp",
+  "aspect": 0.554
+ },
+ {
+  "sku": "UTR",
+  "name": "UniFi Travel Router",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/utr",
+  "source": "https://cdn.ecomm.ui.com/products/56664a45-ee21-460f-a8fb-e607a959a379/b9602ad1-009b-47b9-b1b9-03d97e502767.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UTR.webp",
+  "aspect": 0.74
+ },
+ {
+  "sku": "UTR-LR",
+  "name": "UniFi Travel Router Long-Range",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/utr-lr",
+  "source": "https://cdn.ecomm.ui.com/products/0defc770-d70c-4938-9648-72722361dc79/8b284c0f-d1ed-485c-846b-a321bedb02d6.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UTR-LR.webp",
+  "aspect": 0.41
+ },
+ {
+  "sku": "UWB-XG",
+  "name": "WiFi BaseStation XG",
+  "category": "ap",
+  "page": "https://techspecs.ui.com/unifi/wifi/uwb-xg",
+  "source": "https://cdn.ecomm.ui.com/products/998f8bbd-ef2e-4fed-8c88-9074e623409e/7079a25f-df5f-4911-8b02-e7c67ddd3c93.png",
+  "file": "/hardware/unifi/UWB-XG.webp",
+  "aspect": 1.589
+ },
+ {
+  "sku": "EF-Core",
+  "name": "Enterprise Firewall Core",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ef-core",
+  "source": "https://cdn.ecomm.ui.com/products/8f56712e-ed57-48ca-a180-f8fea2d343c3/9fbc153c-77b3-4b9e-a629-1927c66a7bc6.png",
+  "file": "/hardware/unifi/EF-Core.webp",
+  "aspect": 5.246
+ },
+ {
+  "sku": "EFG",
+  "name": "Enterprise Firewall",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/efg",
+  "source": "https://cdn.ecomm.ui.com/products/65adb8bd-c318-45f9-8b9f-9c15fb025ec2/7321698a-e18b-4038-8ac1-f23d8d124c50.png",
+  "file": "/hardware/unifi/EFG.webp",
+  "aspect": 5.981
+ },
+ {
+  "sku": "UCG-Fiber",
+  "name": "Cloud Gateway Fiber",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ucg-fiber",
+  "source": "https://cdn.ecomm.ui.com/products/48cf74fa-0456-4c5f-bbcc-c1a1ffdc11f9/465257f3-0acc-4a11-bb15-762e7f6c0e9c.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UCG-Fiber.webp",
+  "aspect": 3.721
+ },
+ {
+  "sku": "UCG-Industrial",
+  "name": "Cloud Gateway Industrial",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ucg-industrial",
+  "source": "https://cdn.ecomm.ui.com/products/b5db03fd-a838-4c6c-a1ee-1451a09d41d4/9635f89d-db57-4d0f-bb2d-40999debed54.png",
+  "file": "/hardware/unifi/UCG-Industrial.webp",
+  "aspect": 0.945
+ },
+ {
+  "sku": "UCG-Max",
+  "name": "Cloud Gateway Max",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ucg-max",
+  "source": "https://cdn.ecomm.ui.com/products/8cca3680-14a6-496a-af7d-beba49cea3f2/7c6f4e54-1f20-485a-a0f0-22e968b66a66.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UCG-Max.webp",
+  "aspect": 2.949
+ },
+ {
+  "sku": "UCG-Ultra",
+  "name": "Cloud Gateway Ultra",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ucg-ultra",
+  "source": "https://cdn.ecomm.ui.com/products/8d2d9e4b-89f3-49a1-9c17-5d774c0067b4/2e179331-f85a-4bc9-bf3e-d00192522732.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UCG-Ultra.webp",
+  "aspect": 2.922
+ },
+ {
+  "sku": "UDM-Beast",
+  "name": "Dream Machine Beast",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udm-beast",
+  "source": "https://cdn.ecomm.ui.com/products/352e353d-16e7-45b5-805e-712848145c65/487e084b-5e18-4a74-b02c-ea6065ddbcc6.png",
+  "file": "/hardware/unifi/UDM-Beast.webp",
+  "aspect": 5.614
+ },
+ {
+  "sku": "UDM-Pro",
+  "name": "Dream Machine Pro",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udm-pro",
+  "source": "https://cdn.ecomm.ui.com/products/9df27ed4-c4ae-471a-8982-f5b0650da76a/2ede4300-385f-4043-8d96-e0400a22465f.png",
+  "file": "/hardware/unifi/UDM-Pro.webp",
+  "aspect": 4.812
+ },
+ {
+  "sku": "UDM-Pro-Max",
+  "name": "Dream Machine Pro Max",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udm-pro-max",
+  "source": "https://cdn.ecomm.ui.com/products/401190d7-6a49-4c2e-bef1-7fe087d2b6b6/95713566-423f-45e1-8b40-6d760f048490.png",
+  "file": "/hardware/unifi/UDM-Pro-Max.webp",
+  "aspect": 4.885
+ },
+ {
+  "sku": "UDM-SE",
+  "name": "Dream Machine Special Edition",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udm-se",
+  "source": "https://cdn.ecomm.ui.com/products/1b6fcc08-a6b8-4496-a831-6125a47c412f/1aaaac38-597b-4125-b0de-7a2671580b21.png",
+  "file": "/hardware/unifi/UDM-SE.webp",
+  "aspect": 4.776
+ },
+ {
+  "sku": "UDR",
+  "name": "Dream Router",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udr",
+  "source": "https://cdn.ecomm.ui.com/products/60459473-c989-41db-93f2-3c0f40df84f3/b4fd2ae0-8d83-4ad0-ab4e-138d034a32f3.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UDR.webp",
+  "aspect": 0.559
+ },
+ {
+  "sku": "UDR-5G-Max",
+  "name": "Dream Router 5G Max",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udr-5g-max",
+  "source": "https://cdn.ecomm.ui.com/products/59acabe1-9d17-43dc-8015-dfb95897fa11/7da91ff3-a17a-4c0d-80f5-f9f611c6c094.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UDR-5G-Max.webp",
+  "aspect": 0.569
+ },
+ {
+  "sku": "UDR7",
+  "name": "Dream Router 7",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udr7",
+  "source": "https://cdn.ecomm.ui.com/products/5fd748ec-76b6-48ca-9256-9fb09d50b4b0/c57b6e85-cf5b-48c8-9e92-9f25e4dd0f39.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UDR7.webp",
+  "aspect": 0.553
+ },
+ {
+  "sku": "UDW",
+  "name": "Dream Wall",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/udw",
+  "source": "https://cdn.ecomm.ui.com/products/df8c3478-6280-45c0-80e3-78915f9c17c1/b3abc194-6177-499a-ab20-6e21b47629ae.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UDW.webp",
+  "aspect": 0.705
+ },
+ {
+  "sku": "UX",
+  "name": "UniFi Express",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ux",
+  "source": "https://cdn.ecomm.ui.com/products/4ed25b4c-db92-4b98-bbf3-b0989f007c0e/3ff34453-72fa-485e-b2fa-836b10dbc3be.png",
+  "note": "display switched off and printed model name removed",
+  "file": "/hardware/unifi/UX.webp",
+  "aspect": 2.397
+ },
+ {
+  "sku": "UX7",
+  "name": "UniFi Express 7",
+  "category": "gateway",
+  "page": "https://techspecs.ui.com/unifi/cloud-gateways/ux7",
+  "source": "https://cdn.ecomm.ui.com/products/d3220754-f4a9-4ecc-a0bd-64e1520ef471/3c825279-5f12-4420-8f9f-acb8019bb192.png",
+  "note": "store.ui.com front view; status screen blanked and printed model name removed",
+  "file": "/hardware/unifi/UX7.webp",
+  "aspect": 2.488
+ },
+ {
+  "sku": "EAV-Fiber",
+  "name": "Enterprise Audio/Video Fiber",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/eav-fiber",
+  "source": "https://cdn.ecomm.ui.com/products/b6dd112b-bedd-4089-8831-c43a1241448a/37b978dc-4a1c-43e1-8a8b-9cc193f66c58.png",
+  "file": "/hardware/unifi/EAV-Fiber.webp",
+  "aspect": 4.741
+ },
+ {
+  "sku": "EAV-XG-24-PoE",
+  "name": "Enterprise Audio/Video XG 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/eav-xg-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/d7832d85-03a3-4d3f-a935-e9ed5d4f7b8f/8b8579c0-f46a-46ab-8bac-a40796190a2c.png",
+  "file": "/hardware/unifi/EAV-XG-24-PoE.webp",
+  "aspect": 4.706
+ },
+ {
+  "sku": "ECS-24-PoE",
+  "name": "Enterprise Campus 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/f83443e3-38b7-415b-85cd-e3da1d0c044c/6cae8c8d-f8ab-4207-b0f9-111898f30f66.png",
+  "file": "/hardware/unifi/ECS-24-PoE.webp",
+  "aspect": 4.741
+ },
+ {
+  "sku": "ECS-24S",
+  "name": "Enterprise Campus 24S",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-24s",
+  "source": "https://cdn.ecomm.ui.com/products/4aca7985-bf07-4835-b2a2-7f14685f50c1/2a9e63b2-ce6e-4df4-a508-3e6758a54bbc.png",
+  "file": "/hardware/unifi/ECS-24S.webp",
+  "aspect": 4.848
+ },
+ {
+  "sku": "ECS-24S-PoE",
+  "name": "Enterprise Campus 24S PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-24s-poe",
+  "source": "https://cdn.ecomm.ui.com/products/a8ebdcc3-9603-4387-b3ba-50f242bf55ae/9b2de5bf-3bbd-42fa-b647-c105c46d3457.png",
+  "file": "/hardware/unifi/ECS-24S-PoE.webp",
+  "aspect": 4.848
+ },
+ {
+  "sku": "ECS-48-PoE",
+  "name": "Enterprise Campus 48 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-48-poe",
+  "source": "https://cdn.ecomm.ui.com/products/c0e18508-feb3-4d93-93d7-2a022815cfac/feb987d6-1eb6-497a-83fd-af24f4116192.png",
+  "file": "/hardware/unifi/ECS-48-PoE.webp",
+  "aspect": 4.848
+ },
+ {
+  "sku": "ECS-48S",
+  "name": "Enterprise Campus 48S",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-48s",
+  "source": "https://cdn.ecomm.ui.com/products/c2dcfd86-e80c-4f55-a883-a40112f222d5/10e0b990-964f-4d9a-a1f7-9eb7dba4bf97.png",
+  "file": "/hardware/unifi/ECS-48S.webp",
+  "aspect": 4.923
+ },
+ {
+  "sku": "ECS-48S-PoE",
+  "name": "Enterprise Campus 48S PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-48s-poe",
+  "source": "https://cdn.ecomm.ui.com/products/734c4b7d-fd16-43b8-90d6-f2427a0d499d/bb7f429a-5d30-49a5-8ed2-2595e61b753d.png",
+  "file": "/hardware/unifi/ECS-48S-PoE.webp",
+  "aspect": 4.961
+ },
+ {
+  "sku": "ECS-Aggregation",
+  "name": "Enterprise Campus Aggregation",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-aggregation",
+  "source": "https://cdn.ecomm.ui.com/products/82c1c564-0e08-4b27-a7b9-95729cca00bd/273218d0-162e-4389-8143-686302547137.png",
+  "file": "/hardware/unifi/ECS-Aggregation.webp",
+  "aspect": 5.378
+ },
+ {
+  "sku": "ECS-Core",
+  "name": "Enterprise Campus Switch Core",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/ecs-core",
+  "source": "https://cdn.ecomm.ui.com/products/2fef9072-e7cd-4e94-82c3-b35ed53e473f/6333c1bf-a040-4cb7-a1e8-eecec4f160aa.png",
+  "file": "/hardware/unifi/ECS-Core.webp",
+  "aspect": 5.289
+ },
+ {
+  "sku": "UACC-Flex-Utility-Pro",
+  "name": "Flex Utility Pro",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/uacc-flex-utility-pro",
+  "source": "https://cdn.ecomm.ui.com/products/1ace6299-aa9e-43c3-acb5-9af7f946dd11/2f18ab56-f7d6-4620-a6c2-17bbd4437d9e.png",
+  "file": "/hardware/unifi/UACC-Flex-Utility-Pro.webp",
+  "aspect": 1.778
+ },
+ {
+  "sku": "US-24",
+  "name": "Standard 24 (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-24",
+  "source": "https://cdn.ecomm.ui.com/products/fc8d2e53-536f-4de4-834c-dd945260404c/082b1a8d-aeb9-4075-9ee5-50af935ec6f8.png",
+  "file": "/hardware/unifi/US-24.webp",
+  "aspect": 4.571
+ },
+ {
+  "sku": "US-24-500W",
+  "name": "Standard 24 PoE Hi-Power (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-24-500w",
+  "source": "https://cdn.ecomm.ui.com/products/e93dcaf7-659b-45cd-a2a6-02c86a610aa5/1efb2070-8ce2-46b1-bf60-285762158039.png",
+  "file": "/hardware/unifi/US-24-500W.webp",
+  "aspect": 5.039
+ },
+ {
+  "sku": "US-48",
+  "name": "Standard 48 (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-48",
+  "source": "https://cdn.ecomm.ui.com/products/82cb04ea-31b6-42d8-99a2-1bb6276aac15/b75f2450-52b8-450f-8c04-0af1e84701d2.png",
+  "file": "/hardware/unifi/US-48.webp",
+  "aspect": 4.539
+ },
+ {
+  "sku": "US-48-500W",
+  "name": "Standard 48 PoE (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-48-500w",
+  "source": "https://cdn.ecomm.ui.com/products/6f7fec08-d391-4466-947e-72182abcb738/d9cb3dca-7370-49f9-9c0b-1534b515e931.png",
+  "file": "/hardware/unifi/US-48-500W.webp",
+  "aspect": 4.706
+ },
+ {
+  "sku": "US-48-750W",
+  "name": "Standard 48 PoE Hi-Power (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-48-750w",
+  "source": "https://cdn.ecomm.ui.com/products/1e5e0119-083c-46fb-a303-e2e5be1dabd7/2af1a3eb-82a1-49f4-95d4-b794af59c52c.png",
+  "file": "/hardware/unifi/US-48-750W.webp",
+  "aspect": 5.203
+ },
+ {
+  "sku": "US-8",
+  "name": "8 (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-8",
+  "source": "https://cdn.ecomm.ui.com/products/57452968-38ff-463e-954a-8c0a45e85077/77f23229-bb66-4e85-ab80-25579b1db5f3.png",
+  "file": "/hardware/unifi/US-8.webp",
+  "aspect": 2.199
+ },
+ {
+  "sku": "US-8-150W",
+  "name": "8 PoE, SFP (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-8-150w",
+  "source": "https://cdn.ecomm.ui.com/products/fdec2ee9-f41c-477c-8459-bc738780dd27/a74b1c79-80c4-492b-9c13-a11ca78bb4bd.png",
+  "file": "/hardware/unifi/US-8-150W.webp",
+  "aspect": 2.87
+ },
+ {
+  "sku": "US-8-60W",
+  "name": "8 PoE (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-8-60w",
+  "source": "https://cdn.ecomm.ui.com/products/329a00f3-7202-414d-968e-6330ee22037b/32857588-32c5-4fd0-99e7-5e29d0d84d10.png",
+  "file": "/hardware/unifi/US-8-60W.webp",
+  "aspect": 2.184
+ },
+ {
+  "sku": "US-XG-6POE",
+  "name": "XG 6 PoE (Gen1)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/us-xg-6poe",
+  "source": "https://cdn.ecomm.ui.com/products/d8b7d995-1066-45af-b3a8-08bac0810f06/f677a14d-d908-4a73-976f-121295898a18.png",
+  "file": "/hardware/unifi/US-XG-6POE.webp",
+  "aspect": 3.2
+ },
+ {
+  "sku": "USW-16-POE",
+  "name": "Standard 16 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-16-poe",
+  "source": "https://cdn.ecomm.ui.com/products/ab04370e-f45d-4651-828c-b290de8df45b/8fe1e8dc-fb88-4102-91b5-e1826d079d37.png",
+  "file": "/hardware/unifi/USW-16-POE.webp",
+  "aspect": 5.161
+ },
+ {
+  "sku": "USW-24",
+  "name": "Standard 24",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-24",
+  "source": "https://cdn.ecomm.ui.com/products/d443e087-efcf-47a1-8465-7fa3e60cf916/23c2a6bc-a606-43c0-9f3c-27f04f437bdf.png",
+  "file": "/hardware/unifi/USW-24.webp",
+  "aspect": 5.161
+ },
+ {
+  "sku": "USW-24-POE",
+  "name": "Standard 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/467359c4-e5c3-487b-ae00-f6b7de29c6fc/1fd41f67-8fd9-4689-989e-c03b43217e3a.png",
+  "file": "/hardware/unifi/USW-24-POE.webp",
+  "aspect": 5.161
+ },
+ {
+  "sku": "USW-48",
+  "name": "Standard 48",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-48",
+  "source": "https://cdn.ecomm.ui.com/products/8a649eb8-c497-4240-92ba-a5c7a792c395/fcf3841a-9b8c-45b1-9d77-8f878bebdcba.png",
+  "file": "/hardware/unifi/USW-48.webp",
+  "aspect": 4.885
+ },
+ {
+  "sku": "USW-48-POE",
+  "name": "Standard 48 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-48-poe",
+  "source": "https://cdn.ecomm.ui.com/products/147e90c2-da47-44ad-ad19-b98e223cb54b/378bcc80-2ebd-45f1-a2fc-0e66669824e1.png",
+  "file": "/hardware/unifi/USW-48-POE.webp",
+  "aspect": 4.885
+ },
+ {
+  "sku": "USW-Aggregation",
+  "name": "Aggregation",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-aggregation",
+  "source": "https://cdn.ecomm.ui.com/products/1c748fb1-b4df-43ef-83e0-d5ed26f9db7c/b06fde87-241d-4b4e-8319-8d7d29f6f6c2.png",
+  "file": "/hardware/unifi/USW-Aggregation.webp",
+  "aspect": 7.033
+ },
+ {
+  "sku": "USW-Enterprise-24-PoE",
+  "name": "Enterprise 24 PoE (Vintage)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-enterprise-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/9f693a84-9dcb-452f-889a-faba29ac4b73/5fe1f270-b8f9-4076-8cf3-805bea605720.png",
+  "file": "/hardware/unifi/USW-Enterprise-24-PoE.webp",
+  "aspect": 5.926
+ },
+ {
+  "sku": "USW-Enterprise-48-PoE",
+  "name": "Enterprise 48 PoE (Vintage)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-enterprise-48-poe",
+  "source": "https://cdn.ecomm.ui.com/products/81802ee3-ab5d-46f6-b6f7-2abbe2a5968b/99abbce7-11cf-457d-8cab-0418a12a82c7.png",
+  "file": "/hardware/unifi/USW-Enterprise-48-PoE.webp",
+  "aspect": 5.614
+ },
+ {
+  "sku": "USW-Enterprise-8-PoE",
+  "name": "Enterprise 8 PoE (Vintage)",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-enterprise-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/f9af6d87-2024-475d-a062-2038566ac850/726a4b28-9eb2-46c6-925e-4eef0adb4ad4.png",
+  "file": "/hardware/unifi/USW-Enterprise-8-PoE.webp",
+  "aspect": 2.883
+ },
+ {
+  "sku": "USW-Flex",
+  "name": "Flex",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flex",
+  "source": "https://cdn.ecomm.ui.com/products/c9a07d37-b390-4a5b-89c5-3cdab8e011c7/4bcd3c2b-a8b1-4be1-baab-deda172291cd.png",
+  "file": "/hardware/unifi/USW-Flex.webp",
+  "aspect": 2.795
+ },
+ {
+  "sku": "USW-Flex-2.5G-5",
+  "name": "Flex Mini 2.5G",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flex-2-5g-5",
+  "source": "https://cdn.ecomm.ui.com/products/50830d51-4d7e-47ea-92f4-11043d3d664f/c956d05e-4351-46ba-b71e-afaafa3f1144.png",
+  "file": "/hardware/unifi/USW-Flex-2.5G-5.webp",
+  "aspect": 2.723
+ },
+ {
+  "sku": "USW-Flex-2.5G-8",
+  "name": "Flex 2.5G",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flex-2-5g-8",
+  "source": "https://cdn.ecomm.ui.com/products/1d18e099-3be0-4f49-8126-5ade125543b5/19c0d063-e56d-4fbe-958f-b6209eafc8cb.png",
+  "file": "/hardware/unifi/USW-Flex-2.5G-8.webp",
+  "aspect": 2.452
+ },
+ {
+  "sku": "USW-Flex-2.5G-8-PoE",
+  "name": "Flex 2.5G PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flex-2-5g-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/e9d97121-f363-4261-83db-5f74e093a304/dd55113e-93b2-40da-b10b-945ab4d609d0.png",
+  "file": "/hardware/unifi/USW-Flex-2.5G-8-PoE.webp",
+  "aspect": 2.7
+ },
+ {
+  "sku": "USW-Flex-Mini",
+  "name": "Flex Mini",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flex-mini",
+  "source": "https://cdn.ecomm.ui.com/products/5a176b22-af34-40f2-820c-958610df1825/19394e07-5146-4f8c-b72d-7fdbdf679c97.png",
+  "file": "/hardware/unifi/USW-Flex-Mini.webp",
+  "aspect": 3.122
+ },
+ {
+  "sku": "USW-Flex-Utility",
+  "name": "Flex Utility",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flexutility",
+  "source": "https://cdn.ecomm.ui.com/products/a2a40116-c5ef-426a-a10a-a9eef2adebd9/1e40c9cc-c039-48fc-a460-020dca43ffdb.png",
+  "file": "/hardware/unifi/USW-Flex-Utility.webp",
+  "aspect": 0.805
+ },
+ {
+  "sku": "USW-Flex-XG",
+  "name": "Flex 10 GbE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-flex-xg",
+  "source": "https://cdn.ecomm.ui.com/products/61d6b40e-0997-4ce0-b723-bb0c2c4aafa2/9d558a4b-49c7-435d-b574-94f6581e23a9.png",
+  "file": "/hardware/unifi/USW-Flex-XG.webp",
+  "aspect": 2.712
+ },
+ {
+  "sku": "USW-Industrial",
+  "name": "Industrial",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-industrial",
+  "source": "https://cdn.ecomm.ui.com/products/e9c1cd60-bc9d-4e80-9e17-7a3dbecf9f29/2fad00b0-046a-4040-abb5-a206120bffb6.png",
+  "file": "/hardware/unifi/USW-Industrial.webp",
+  "aspect": 2.819
+ },
+ {
+  "sku": "USW-Industrial-DIN-2.5G-8-PoE",
+  "name": "Industrial DIN 2.5G 8 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-industrial-din-2-5g-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/940caf8d-bcd2-4fdf-a835-d835a2ccce68/83eaee93-a6f3-45f8-ab98-f8f2a4507af3.png",
+  "file": "/hardware/unifi/USW-Industrial-DIN-2.5G-8-PoE.webp",
+  "aspect": 0.577
+ },
+ {
+  "sku": "USW-Industrial-DIN-8",
+  "name": "Industrial DIN 8",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-industrial-din-8",
+  "source": "https://cdn.ecomm.ui.com/products/35508b8f-0600-45e9-aa66-de881a6aa402/6696f16b-2695-485b-89fe-ff1a1dcdf743.png",
+  "file": "/hardware/unifi/USW-Industrial-DIN-8.webp",
+  "aspect": 0.597
+ },
+ {
+  "sku": "USW-Industrial-DIN-8-PoE",
+  "name": "Industrial DIN 8 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-industrial-din-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/2224a6a4-5ce5-496a-a8ed-b7a722af5d33/ddeccbf5-680a-4150-8388-faadb9aa663c.png",
+  "file": "/hardware/unifi/USW-Industrial-DIN-8-PoE.webp",
+  "aspect": 0.594
+ },
+ {
+  "sku": "USW-LR-Switch-8-PoE",
+  "name": "Long-Range Switch 8 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-lr-switch-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/e89551ff-356e-4a94-9e80-5499fb8c8557/9c84b7ab-b7a0-4694-beb4-9d5eaaedf12e.png",
+  "file": "/hardware/unifi/USW-LR-Switch-8-PoE.webp",
+  "aspect": 3.636
+ },
+ {
+  "sku": "USW-Lite-16-PoE",
+  "name": "Lite 16 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-lite-16-poe",
+  "source": "https://cdn.ecomm.ui.com/products/e726eace-a772-4f12-bfad-c68baf20e51f/9ecfc657-5e31-4135-89b5-46b3537b35fc.png",
+  "file": "/hardware/unifi/USW-Lite-16-PoE.webp",
+  "aspect": 2.949
+ },
+ {
+  "sku": "USW-Lite-8-PoE",
+  "name": "Lite 8 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-lite-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/75c44878-4e73-446e-8e86-f207db6b2b7c/53b8b06b-69c7-424f-bb81-2f8405356c65.png",
+  "file": "/hardware/unifi/USW-Lite-8-PoE.webp",
+  "aspect": 3.351
+ },
+ {
+  "sku": "USW-Mission-Critical",
+  "name": "UPS PoE Switch",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-mission-critical",
+  "source": "https://cdn.ecomm.ui.com/products/0a2a7ba1-12c3-4736-a31d-ed9a0e9f44d1/f09f5ea1-7307-41bf-89d4-bd864b4cb895.png",
+  "file": "/hardware/unifi/USW-Mission-Critical.webp",
+  "aspect": 4.354
+ },
+ {
+  "sku": "USW-Pro-24",
+  "name": "Pro 24",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-24",
+  "source": "https://cdn.ecomm.ui.com/products/2315330e-7a37-4c6b-87df-0743d04e87ca/5281dd32-ad14-40c5-a8d0-2df56a340bae.png",
+  "file": "/hardware/unifi/USW-Pro-24.webp",
+  "aspect": 5.203
+ },
+ {
+  "sku": "USW-Pro-24-POE",
+  "name": "Pro 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/5b69cdb5-e7ea-44e6-ae16-8714339038fb/18d39964-78e7-45f9-874d-e331f1408730.png",
+  "file": "/hardware/unifi/USW-Pro-24-POE.webp",
+  "aspect": 4.848
+ },
+ {
+  "sku": "USW-Pro-48",
+  "name": "Pro 48",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-48",
+  "source": "https://cdn.ecomm.ui.com/products/17a1db0a-a705-4ea0-b538-2972ca71615a/e5caa219-3faa-48a5-a4e1-d7eea81d738b.png",
+  "file": "/hardware/unifi/USW-Pro-48.webp",
+  "aspect": 4.507
+ },
+ {
+  "sku": "USW-Pro-48-POE",
+  "name": "Pro 48 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-48-poe",
+  "source": "https://cdn.ecomm.ui.com/products/6e019f0c-26b5-4fdf-b4e1-994abd9ce6e1/483da8b5-c584-4100-a4f2-18d11fa7187e.png",
+  "file": "/hardware/unifi/USW-Pro-48-POE.webp",
+  "aspect": 4.507
+ },
+ {
+  "sku": "USW-Pro-8-PoE",
+  "name": "Pro 8 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/37c8c814-f786-4f8a-ac58-96525f22e029/d4a21d75-7b98-43d5-9868-36cab2ba8161.png",
+  "file": "/hardware/unifi/USW-Pro-8-PoE.webp",
+  "aspect": 3.092
+ },
+ {
+  "sku": "USW-Pro-Aggregation",
+  "name": "Hi-Capacity Aggregation",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-aggregation",
+  "source": "https://cdn.ecomm.ui.com/products/35879d83-6169-4d6b-abf6-d3b98b1e8367/f8726fbe-a4fa-4c3b-b9d7-ee426646c1be.png",
+  "file": "/hardware/unifi/USW-Pro-Aggregation.webp",
+  "aspect": 5.872
+ },
+ {
+  "sku": "USW-Pro-HD-24",
+  "name": "Pro HD 24",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-hd-24",
+  "source": "https://cdn.ecomm.ui.com/products/66804bfc-9afd-453c-adbb-7327d8cebe25/387ab337-f5c8-4f8f-94e1-cffc8888ad1d.png",
+  "file": "/hardware/unifi/USW-Pro-HD-24.webp",
+  "aspect": 5.47
+ },
+ {
+  "sku": "USW-Pro-HD-24-PoE",
+  "name": "Pro HD 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-hd-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/17d901a5-c99b-4b02-8d3b-8cb7a5da0512/2ce20101-767d-4e15-b0dc-80449d2807a1.png",
+  "file": "/hardware/unifi/USW-Pro-HD-24-PoE.webp",
+  "aspect": 5.565
+ },
+ {
+  "sku": "USW-Pro-Max-16",
+  "name": "Pro Max 16",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-max-16",
+  "source": "https://cdn.ecomm.ui.com/products/065e9d0f-19c7-4b9e-8b36-8e900363af80/b888cf82-f499-4460-943a-5e92a7a9cf79.png",
+  "file": "/hardware/unifi/USW-Pro-Max-16.webp",
+  "aspect": 5.517
+ },
+ {
+  "sku": "USW-Pro-Max-16-PoE",
+  "name": "Pro Max 16 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-max-16-poe",
+  "source": "https://cdn.ecomm.ui.com/products/0694226c-9791-4d7e-9fb1-d98c91fe3fda/7b73b27e-e77a-4771-b6bf-0aed35b4a16e.png",
+  "file": "/hardware/unifi/USW-Pro-Max-16-PoE.webp",
+  "aspect": 5.517
+ },
+ {
+  "sku": "USW-Pro-Max-24",
+  "name": "Pro Max 24",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-max-24",
+  "source": "https://cdn.ecomm.ui.com/products/dd435390-1705-4159-852c-fd210b4e7c17/756296a7-f55d-4ac6-9aa0-fb946ee30434.png",
+  "file": "/hardware/unifi/USW-Pro-Max-24.webp",
+  "aspect": 5.981
+ },
+ {
+  "sku": "USW-Pro-Max-24-PoE",
+  "name": "Pro Max 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-max-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/58922518-88f6-4c75-89c1-f57ba3d8253a/797246c6-70eb-4606-be9a-77515ac74451.png",
+  "file": "/hardware/unifi/USW-Pro-Max-24-PoE.webp",
+  "aspect": 5.926
+ },
+ {
+  "sku": "USW-Pro-Max-48",
+  "name": "Pro Max 48",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-max-48",
+  "source": "https://cdn.ecomm.ui.com/products/0966f626-63a9-4dc6-b07d-2e0b40e2cead/9bfb5a25-50a7-4c22-b2b9-ee3c8b4a82c0.png",
+  "file": "/hardware/unifi/USW-Pro-Max-48.webp",
+  "aspect": 5.872
+ },
+ {
+  "sku": "USW-Pro-Max-48-PoE",
+  "name": "Pro Max 48 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-max-48-poe",
+  "source": "https://cdn.ecomm.ui.com/products/51e22689-9b81-4717-beed-fe2c65c57362/18b790aa-f0b3-4e6b-9aca-63948c65535d.png",
+  "file": "/hardware/unifi/USW-Pro-Max-48-PoE.webp",
+  "aspect": 5.664
+ },
+ {
+  "sku": "USW-Pro-XG-10-PoE",
+  "name": "Pro XG 10 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-10-poe",
+  "source": "https://cdn.ecomm.ui.com/products/2617380d-b3a8-47c3-802f-fcc22d24e931/0af98290-e7a4-4d4f-b4e5-bd781f3d2132.png",
+  "file": "/hardware/unifi/USW-Pro-XG-10-PoE.webp",
+  "aspect": 5.378
+ },
+ {
+  "sku": "USW-Pro-XG-24",
+  "name": "Pro XG 24",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-24",
+  "source": "https://cdn.ecomm.ui.com/products/5f2af015-a9fd-4f79-9779-74860c328e75/68de03e5-b2d6-41e0-bee0-82c106fe2ee6.png",
+  "file": "/hardware/unifi/USW-Pro-XG-24.webp",
+  "aspect": 4.741
+ },
+ {
+  "sku": "USW-Pro-XG-24-PoE",
+  "name": "Pro XG 24 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-24-poe",
+  "source": "https://cdn.ecomm.ui.com/products/b6f03374-2a31-428c-86fb-62b49739c924/89656ee3-c3f8-424e-b3b1-e493508deffa.png",
+  "file": "/hardware/unifi/USW-Pro-XG-24-PoE.webp",
+  "aspect": 4.923
+ },
+ {
+  "sku": "USW-Pro-XG-48",
+  "name": "Pro XG 48",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-48",
+  "source": "https://cdn.ecomm.ui.com/products/3ecbd029-ba8a-4f82-aa5e-0f2902f60576/1ee9bf0b-ece0-4fe9-bfec-64e21a8eed7e.png",
+  "file": "/hardware/unifi/USW-Pro-XG-48.webp",
+  "aspect": 4.672
+ },
+ {
+  "sku": "USW-Pro-XG-48-PoE",
+  "name": "Pro XG 48 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-48-poe",
+  "source": "https://cdn.ecomm.ui.com/products/b4f97072-47c3-4ea1-96aa-616b94c1ca05/ffad1ad8-f360-420b-9a67-39f12065c33e.png",
+  "file": "/hardware/unifi/USW-Pro-XG-48-PoE.webp",
+  "aspect": 4.604
+ },
+ {
+  "sku": "USW-Pro-XG-8-PoE",
+  "name": "Pro XG 8 PoE",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-8-poe",
+  "source": "https://cdn.ecomm.ui.com/products/104a0f86-8c2e-462d-a95c-ebbc5675ebb8/a78f6eeb-f4ef-4401-aae4-4d8a50e30fce.png",
+  "file": "/hardware/unifi/USW-Pro-XG-8-PoE.webp",
+  "aspect": 2.5
+ },
+ {
+  "sku": "USW-Pro-XG-Aggregation",
+  "name": "Pro XG Aggregation",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-pro-xg-aggregation",
+  "source": "https://cdn.ecomm.ui.com/products/2f42897e-4b8e-4851-af6a-5106211f979e/e541f8bf-a009-427f-815f-7966afbfd1ac.png",
+  "file": "/hardware/unifi/USW-Pro-XG-Aggregation.webp",
+  "aspect": 4.638
+ },
+ {
+  "sku": "USW-Ultra",
+  "name": "Ultra",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-ultra",
+  "source": "https://cdn.ecomm.ui.com/products/d4e5408e-e2b4-4b32-b9d6-efdde2bbaaf3/69808d5d-ba9c-4198-b3e9-749bbb02582c.png",
+  "file": "/hardware/unifi/USW-Ultra.webp",
+  "aspect": 2.7
+ },
+ {
+  "sku": "USW-Ultra-210W",
+  "name": "Ultra 210W",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-ultra-210w",
+  "source": "https://cdn.ecomm.ui.com/products/04d0418c-989e-4316-b143-e7a89c90b72d/fbfadf63-3eeb-4173-8340-3f6119fd7d72.png",
+  "file": "/hardware/unifi/USW-Ultra-210W.webp",
+  "aspect": 2.602
+ },
+ {
+  "sku": "USW-Ultra-60W",
+  "name": "Ultra 60W",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-ultra-60w",
+  "source": "https://cdn.ecomm.ui.com/products/d1af5d9b-b74c-4881-99af-033b71ed1590/f80567f8-ba09-4a75-982d-6fd636623492.png",
+  "file": "/hardware/unifi/USW-Ultra-60W.webp",
+  "aspect": 2.735
+ },
+ {
+  "sku": "USW-WAN",
+  "name": "WAN Switch",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-wan",
+  "source": "https://cdn.ecomm.ui.com/products/280f3aca-e9e2-4e8e-9fd2-41349966e754/aae0726d-c438-40fa-8fb6-d71d1fdd0eda.png",
+  "file": "/hardware/unifi/USW-WAN.webp",
+  "aspect": 6.598
+ },
+ {
+  "sku": "USW-WAN-RJ45",
+  "name": "WAN Switch RJ45",
+  "category": "switch",
+  "page": "https://techspecs.ui.com/unifi/switching/usw-wan-rj45",
+  "source": "https://cdn.ecomm.ui.com/products/c3e77652-db6d-41d5-882c-55a2da9b37f7/020638c1-490d-48e7-96e6-580ae3561e9c.png",
+  "file": "/hardware/unifi/USW-WAN-RJ45.webp",
+  "aspect": 6.737
+ }
+]
