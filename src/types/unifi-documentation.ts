@@ -356,6 +356,43 @@ export interface ChainRule {
   predefined: boolean;
 }
 
+/* ------------------------------------------------------------------ security findings (optional report section) */
+
+export type Severity = "High" | "Medium" | "Low" | "Info";
+
+/** One concern raised by an automated check of the imported configuration. */
+export interface Finding {
+  /** Reference shown in the report, "F-01"... in severity order. */
+  ref: string;
+  /** Id of the check that raised it. */
+  checkId: string;
+  severity: Severity;
+  category: string;
+  title: string;
+  /** What was seen in the imported data, in one or two sentences. */
+  observed: string;
+  /** Devices, networks, rules or clients concerned. */
+  affected: string[];
+  recommendation: string;
+}
+
+export type CheckResult = "Finding" | "No finding" | "Not evaluated";
+
+/** Every check that ran, so that the absence of a finding can be read correctly. */
+export interface SecurityCheck {
+  id: string;
+  category: string;
+  name: string;
+  result: CheckResult;
+  /** Why a check could not be evaluated, or a short qualifier. */
+  note: string;
+}
+
+export interface FindingsReport {
+  findings: Finding[];
+  checks: SecurityCheck[];
+}
+
 /* ------------------------------------------------------------------ snapshot */
 
 export interface SnapshotKpis {
@@ -395,6 +432,8 @@ export interface SiteDocumentationSnapshot {
   firewallZones: FirewallZone[];
   firewallRules: FirewallRule[];
   chainRules: ChainRule[];
+  /** Security findings. Absent in snapshots saved before the checks existed. */
+  findings?: FindingsReport;
 }
 
 /* ------------------------------------------------------------------ raw input */
@@ -412,6 +451,10 @@ export interface RawSitePayloads {
   firewallPolicies?: unknown[];
   firewallZones?: unknown[];
   ispMetrics?: unknown[];
+  /** rest/portforward */
+  portForwards?: unknown[];
+  /** rest/setting (one record per settings group; secrets are stripped on arrival). */
+  settings?: unknown[];
 }
 
 /** One RouterOS device's REST payloads (all values are strings, as RouterOS returns them). */
@@ -470,6 +513,8 @@ export interface ReportConfig {
   theme: ThemeId;
   /** Append the "Device identification" section (every device seen, with vendor/type evidence). */
   includeIdentification: boolean;
+  /** Add the "Security findings" section. Off by default: the report is documentation unless this is chosen. */
+  includeFindings: boolean;
 }
 
 export interface ExportPayload {

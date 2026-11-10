@@ -2,6 +2,7 @@
  * UniFi Network payloads -> SiteDocumentationSnapshot (isomorphic).
  * Shared sanitizer/formatters live in `normalize-common.ts` and are re-exported here.
  */
+import { unifiChecks } from "./findings-unifi";
 import type {
   AccessPointDevice,
   ActiveState,
@@ -561,6 +562,7 @@ export function normalizeSite(rawInput: RawSitePayloads, ctx: NormalizeContext):
     secretValues,
     aliasByMac,
     controllerVendorByMac: vendorByMac,
+    vendorChecks: (snapshot) => unifiChecks(snapshot, raw),
     ...(() => {
       const gwRaw = devicesRaw.find((d) => GATEWAY_TYPES.has(lower(d.type)));
       const primary = normalizeWan(raw, ctx, networkconf, gateway, capturedAt);

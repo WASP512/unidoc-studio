@@ -197,6 +197,46 @@ function neighbor(port: string, mac: string, identity: string, extra: Rec): Rec 
 
 /* ------------------------------------------------------------------ BR-EDGE */
 
+/** Management, account and maintenance menus read for the security findings. */
+function hardening(o: {
+  cleartext?: string[]; // enabled clear-text services
+  winboxFrom?: string; // "available from" on WinBox/SSH ("" = any address)
+  admin?: boolean; // factory admin account still enabled
+  snmp?: boolean; // SNMP on with the default community
+  macAll?: boolean; // MAC server on all interfaces
+  strongCrypto?: boolean;
+  latest?: string; // RouterOS version offered by the update channel
+}): Rec {
+  const on = new Set(o.cleartext ?? []);
+  const svc = (name: string, port: string, enabled: boolean, address = ""): Rec => ({ name, port, address, disabled: enabled ? "false" : "true", invalid: "false" });
+  return {
+    services: [
+      svc("telnet", "23", on.has("telnet")),
+      svc("ftp", "21", on.has("ftp")),
+      svc("www", "80", on.has("www")),
+      svc("ssh", "22", true, o.winboxFrom ?? ""),
+      svc("www-ssl", "443", true, o.winboxFrom ?? ""),
+      svc("api", "8728", on.has("api")),
+      svc("winbox", "8291", true, o.winboxFrom ?? ""),
+      svc("api-ssl", "8729", false),
+    ],
+    users: [
+      { ".id": "*1", name: "admin", group: "full", address: "", disabled: o.admin ? "false" : "true" },
+      { ".id": "*2", name: "netops", group: "full", address: "10.20.99.0/24", disabled: "false" },
+      { ".id": "*3", name: "unidoc", group: "unidoc-ro", address: "10.20.99.50/32", disabled: "false" },
+    ],
+    upnp: { enabled: "false", "allow-disable-external-interface": "false" },
+    snmp: { enabled: o.snmp ? "true" : "false", contact: "", location: "", "trap-version": "1" },
+    snmpCommunities: [{ ".id": "*0", name: "public", addresses: "::/0", security: "none", "read-access": "true", "write-access": "false", "authentication-password": "demo-fake-snmp-auth", "encryption-password": "demo-fake-snmp-enc" }],
+    macServer: { "allowed-interface-list": o.macAll ? "all" : "LAN" },
+    macWinbox: { "allowed-interface-list": o.macAll ? "all" : "LAN" },
+    ssh: { "strong-crypto": o.strongCrypto ? "true" : "false", "forwarding-enabled": "no", "host-key-size": "2048" },
+    socks: { enabled: "false", port: "1080" },
+    proxy: { enabled: "false", port: "8080" },
+    packageUpdate: o.latest ? { channel: "stable", "installed-version": "7.16.2", "latest-version": o.latest, status: o.latest === "7.16.2" ? "System is already up to date" : "New version is available" } : { channel: "stable", "installed-version": "7.16.2" },
+  };
+}
+
 function edge(): RouterOsDevicePayload {
   const up = new Set(["ether1", "ether2", "ether3", "ether8", "sfp-sfpplus1"]);
   const vlanIfaces = VLANS.map(([, name, comment], i) => ({ ".id": id(40 + i), name, type: "vlan", "mac-address": macSeq(GW_BASE, 1), running: "true", disabled: "false", comment }));
@@ -277,6 +317,7 @@ function edge(): RouterOsDevicePayload {
   return {
     address: "10.20.99.1",
     identity: { name: "BR-EDGE" },
+    ...hardening({ cleartext: ["www"], winboxFrom: "10.20.99.0/24,10.255.10.0/24", strongCrypto: true, latest: "7.18.2" }),
     resource: { "board-name": "RB5009UPr+S+", version: VERSION, uptime: "3w2d07:14:52", "cpu-load": "7", "free-memory": "723517440", "total-memory": "1073741824", "architecture-name": "arm64", platform: "MikroTik" },
     routerboard: { routerboard: "true", model: "RB5009UPr+S+", "serial-number": "HFE09KRT3MQ", "current-firmware": "7.16.2", "upgrade-firmware": "7.16.2" },
     health: [{ name: "cpu-temperature", value: "41", type: "C" }, { name: "board-temperature1", value: "36", type: "C" }, { name: "psu1-voltage", value: "48.1", type: "V" }],
@@ -376,8 +417,10 @@ function core(): RouterOsDevicePayload {
   return {
     address: "10.20.99.2",
     identity: { name: "BR-CORE" },
+    // left close to factory settings
+    ...hardening({ cleartext: ["telnet", "ftp", "www", "api"], admin: true, snmp: true, macAll: true }),
     resource: { "board-name": "CRS326-24G-2S+", version: VERSION, uptime: "9w4d11:02:10", "cpu-load": "3", "free-memory": "431980544", "total-memory": "536870912", "architecture-name": "arm" },
-    routerboard: { routerboard: "true", model: "CRS326-24G-2S+", "serial-number": "HE9089P1QTA", "current-firmware": "7.16.2" },
+    routerboard: { routerboard: "true", model: "CRS326-24G-2S+", "serial-number": "HE9089P1QTA", "current-firmware": "7.16.2", "upgrade-firmware": "7.16.2" },
     health: [{ name: "temperature", value: "38", type: "C" }],
     interfaces: [
       ...interfaceRecords(CORE_BASE, corePorts, [], { ether18: "Hyper-V host", ether20: "Shop SG350 trunk", ether22: "UPS NMC", ether24: "Shipping desk switch", "sfp-sfpplus1": "Uplink BR-EDGE", "sfp-sfpplus2": "BR-POE" }, up),
@@ -422,8 +465,9 @@ function poe(): RouterOsDevicePayload {
   return {
     address: "10.20.99.3",
     identity: { name: "BR-POE" },
+    ...hardening({ cleartext: ["www", "api"], admin: true, macAll: true }),
     resource: { "board-name": "CRS328-24P-4S+", version: VERSION, uptime: "9w4d11:01:58", "cpu-load": "5", "free-memory": "425721856", "total-memory": "536870912", "architecture-name": "arm" },
-    routerboard: { routerboard: "true", model: "CRS328-24P-4S+", "serial-number": "HE20951KZ7C", "current-firmware": "7.16.2" },
+    routerboard: { routerboard: "true", model: "CRS328-24P-4S+", "serial-number": "HE20951KZ7C", "current-firmware": "7.12.1", "upgrade-firmware": "7.16.2" },
     health: [{ name: "temperature", value: "47", type: "C" }, { name: "fan1-speed", value: "4200", type: "RPM" }],
     interfaces: [
       ...interfaceRecords(POE_BASE, poePorts, [], comments, up),

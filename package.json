@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -H 127.0.0.1",
     "lint": "eslint",
-    "verify": "tsx scripts/verify-mock.ts && tsx scripts/plan-pages.ts",
+    "verify": "tsx scripts/verify-mock.ts && tsx scripts/verify-findings.ts && tsx scripts/plan-pages.ts",
     "export:demo": "tsx scripts/export-demo-pdf.ts",
     "mock:console": "tsx scripts/mock-unifi-server.ts",
     "mock:routeros": "tsx scripts/mock-routeros-server.ts",

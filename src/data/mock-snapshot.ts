@@ -42,6 +42,8 @@ export function createMockUnifiSnapshot(ouiLookup?: OuiLookup): SiteDocumentatio
       ["vpnServers", `v2/api/site/${MOCK_SITE}/vpn/servers`, raw.vpnServers],
       ["firewallPolicies", `v2/api/site/${MOCK_SITE}/firewall-policies`, raw.firewallPolicies],
       ["firewallZones", `v2/api/site/${MOCK_SITE}/firewall/zones`, raw.firewallZones],
+      ["portForwards", `api/s/${MOCK_SITE}/rest/portforward`, raw.portForwards],
+      ["settings", `api/s/${MOCK_SITE}/rest/setting`, raw.settings],
       ["ispMetrics", "v1/isp-metrics/5m?duration=24h", raw.ispMetrics],
     ] as const
   ).map(([key, path, data]) => ({ key, path, ok: true, httpStatus: 200, records: count(data) }));
@@ -90,9 +92,12 @@ export function createMockMikrotikSnapshot(ouiLookup?: OuiLookup): SiteDocumenta
  * Document details applied when a demo site is loaded.
  * Both demo sites are fictional and come with fictional client/integrator details
  * (.example addresses, 555-01xx numbers) so the cover and notes are populated.
+ * They also switch the optional security findings section on, to show it; for an
+ * imported site it is off until chosen.
  */
 export const DEMO_REPORT_CONFIG: Record<"unifi" | "mikrotik", Partial<ReportConfig>> = {
   unifi: {
+    includeFindings: true,
     clientName: "City of Example (fictional)",
     siteLabel: "City hall and annex",
     clientContactName: "Jordan Reyes, City Recorder",
@@ -110,6 +115,7 @@ export const DEMO_REPORT_CONFIG: Record<"unifi" | "mikrotik", Partial<ReportConf
       "The **Legacy LAN** (untagged, `192.168.8.0/24`) still carries the servers and two access points and is scheduled for migration.\n\nFour wired clients report no switch port and are listed under *Undetermined relationship*.",
   },
   mikrotik: {
+    includeFindings: true,
     clientName: "Ridgeline Supply Co. (fictional)",
     siteLabel: "Branch office",
     clientContactName: "Avery Cole, Operations",

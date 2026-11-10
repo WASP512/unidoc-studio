@@ -14,6 +14,7 @@
  *   - firewall filter + NAT, WireGuard interfaces/peers, IPsec peers
  * Every endpoint is optional; missing data simply leaves cells blank.
  */
+import { mikrotikChecks } from "./findings-mikrotik";
 import type {
   AccessPointDevice,
   ActiveState,
@@ -926,6 +927,7 @@ export function normalizeMikrotik(rawInput: RawMikrotikPayloads, ctx: NormalizeC
     secretValues,
     aliasByMac,
     lldpByMac,
+    vendorChecks: (snapshot) => mikrotikChecks(snapshot, devs.map((d) => ({ name: d.identity, gateway: d === gw, p: d.p }))),
     wan,
     wans,
     gateway,

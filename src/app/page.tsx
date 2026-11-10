@@ -33,6 +33,7 @@ import {
   Router,
   Search,
   Server,
+  ShieldAlert,
   ShieldCheck,
   Sparkles,
   Trash2,
@@ -45,6 +46,7 @@ import type {
   ConnectionMode,
   DiscoveryResponse,
   ExportPayload,
+  FindingsReport,
   ImportResponse,
   MikrotikDiscoveryResponse,
   ReportConfig,
@@ -56,6 +58,7 @@ import { ReportDocument, countPages } from "@/components/report/ReportDocument";
 import { isSnapshot, sanitizeSnapshot } from "@/lib/normalize-common";
 import { THEMES } from "@/lib/themes";
 import { cleanConfig, DEFAULT_CONFIG, LOGO_MAX_BYTES, LOGO_TYPES } from "@/lib/report-config";
+import { SEVERITIES, severityCounts } from "@/lib/findings";
 
 /* ================================================================== defaults */
 
@@ -460,7 +463,7 @@ export default function StudioPage() {
         {step === 2 && snapshot && (
           <div className="grid gap-6 lg:grid-cols-[440px_minmax(0,1fr)]">
             <div className="space-y-5">
-              <CustomizePanel config={config} patch={patch} onError={setError} />
+              <CustomizePanel config={config} patch={patch} onError={setError} findings={snapshot.findings} />
               <ImportReport snapshot={snapshot} />
               <div className="flex flex-wrap gap-2">
                 <button onClick={() => setStep(1)} className={btn("ghost")}>
@@ -502,6 +505,7 @@ export default function StudioPage() {
                 <b className="text-slate-900">{pageCount}</b> A4 pages · {TEMPLATES.find((x) => x.id === config.template)?.label} ·{" "}
                 {THEMES[config.theme].label}
                 {config.includeIdentification ? " · with device identification" : ""}
+                {config.includeFindings ? " · with security findings" : ""}
               </div>
               <div className="ml-auto flex items-center gap-1 rounded-lg border border-slate-200 bg-white p-1">
                 <button className="rounded p-1.5 hover:bg-slate-100" onClick={() => setZoom((z) => Math.max(0.35, +(z - 0.1).toFixed(2)))} aria-label="Zoom out">
@@ -990,7 +994,23 @@ function LogoField({ label, value, onChange, onError }: { label: string; value: 
   );
 }
 
-function CustomizePanel({ config, patch, onError }: { config: ReportConfig; patch: (p: Partial<ReportConfig>) => void; onError: (e: string) => void }) {
+function CustomizePanel({
+  config,
+  patch,
+  onError,
+  findings,
+}: {
+  config: ReportConfig;
+  patch: (p: Partial<ReportConfig>) => void;
+  onError: (e: string) => void;
+  findings?: FindingsReport;
+}) {
+  const counts = severityCounts(findings);
+  const findingsHint = !findings
+    ? "Not evaluated for this snapshot: import the site again"
+    : findings.findings.length
+      ? SEVERITIES.filter((sev) => counts[sev]).map((sev) => `${counts[sev]} ${sev.toLowerCase()}`).join(", ") + ` from ${findings.checks.length} checks`
+      : `No findings from ${findings.checks.length} checks`;
   const text = (key: keyof ReportConfig, placeholder?: string, type = "text") => (
     <input
       className={inputCls}
@@ -1009,9 +1029,11 @@ function CustomizePanel({ config, patch, onError }: { config: ReportConfig; patc
             {text("clientName")}
           </Field>
           <Field label="Site name">{text("siteName")}</Field>
-          <Field label="Secondary site label" hint='"--" when empty'>
-            {text("siteLabel")}
-          </Field>
+          <div className="col-span-2">
+            <Field label="Secondary site label" hint='"--" when empty'>
+              {text("siteLabel")}
+            </Field>
+          </div>
           <Field label="Device identification" hint="Every device seen, with vendor, type and evidence">
             <button
               type="button"
@@ -1023,6 +1045,19 @@ function CustomizePanel({ config, patch, onError }: { config: ReportConfig; patc
             >
               <Fingerprint className="h-4 w-4" />
               {config.includeIdentification ? "Included in report" : "Not included"}
+            </button>
+          </Field>
+          <Field label="Security findings" hint={findingsHint}>
+            <button
+              type="button"
+              onClick={() => patch({ includeFindings: !config.includeFindings })}
+              className={`flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition ${
+                config.includeFindings ? "border-[#0f1e36] bg-slate-50 text-[#0f1e36]" : "border-slate-300 text-slate-500"
+              }`}
+              aria-pressed={config.includeFindings}
+            >
+              <ShieldAlert className="h-4 w-4" />
+              {config.includeFindings ? "Included in report" : "Not included"}
             </button>
           </Field>
         </div>

@@ -27,6 +27,7 @@ export const DEFAULT_CONFIG: ReportConfig = {
   template: "technical",
   theme: "clean-light",
   includeIdentification: true,
+  includeFindings: false,
 };
 
 export const TEMPLATE_IDS: TemplateId[] = ["technical", "professional", "executive"];
@@ -67,5 +68,6 @@ export function cleanConfig(raw: unknown): ReportConfig {
   out.template = TEMPLATE_IDS.includes(c.template as TemplateId) ? (c.template as TemplateId) : "technical";
   out.theme = THEME_IDS.includes(c.theme as ThemeId) ? (c.theme as ThemeId) : "clean-light";
   out.includeIdentification = c.includeIdentification !== false;
+  out.includeFindings = c.includeFindings === true;
   return out;
 }

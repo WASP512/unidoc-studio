@@ -1,18 +1,19 @@
 /**
  * End-to-end export check: loads a demo snapshot from a running UniDoc server,
  * POSTs it to /api/export-pdf and writes the returned PDF.
- *   npx tsx scripts/export-demo-pdf.ts [baseUrl] [out.pdf] [template] [theme] [unifi|mikrotik] [ident:on|off]
+ *   npx tsx scripts/export-demo-pdf.ts [baseUrl] [out.pdf] [template] [theme] [unifi|mikrotik] [ident:on|off] [findings:on|off]
  */
 import fs from "node:fs";
 import { DEFAULT_CONFIG } from "../src/lib/report-config";
 
-const [base = "http://127.0.0.1:3000", out = "demo.pdf", template = "technical", theme = "clean-light", vendor = "unifi", ident = "on"] = process.argv.slice(2);
+const [base = "http://127.0.0.1:3000", out = "demo.pdf", template = "technical", theme = "clean-light", vendor = "unifi", ident = "on", findings = ""] = process.argv.slice(2);
 
 async function main() {
   const demo = await fetch(`${base}/api/demo?vendor=${vendor}`);
   if (!demo.ok) throw new Error(`demo HTTP ${demo.status}`);
   const { snapshot, config: demoConfig } = await demo.json();
   const config = { ...DEFAULT_CONFIG, ...(demoConfig ?? {}), siteName: snapshot.meta.siteName, template, theme, includeIdentification: ident !== "off" };
+  if (findings) config.includeFindings = findings === "on";
 
   const t0 = Date.now();
   const res = await fetch(`${base}/api/export-pdf`, {

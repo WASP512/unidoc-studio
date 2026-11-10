@@ -47,7 +47,7 @@ Tested: the in-container installer on Debian 12 and 13 containers (service start
 Other commands:
 
 ```
-npm run verify                                  # normalizer/sanitizer/identification assertions + page plans
+npm run verify                                  # normalizer/sanitizer/identification/findings assertions + page plans
 npm run export:demo -- http://127.0.0.1:3000 out.pdf technical clean-light mikrotik on
 npm run oui:update                              # refresh data/oui.tsv from the IEEE registries
 npm run photos:update                           # refresh UniFi product photos from techspecs.ui.com (needs Pillow)
@@ -130,6 +130,34 @@ Identification is **passive**: nothing is scanned. Signals used:
 
 Results are an indication, not a verified inventory. A randomized-MAC phone with no hostname will rightly come out as *Unknown*.
 
+## Security findings (optional)
+
+Off by default: the report is documentation unless you choose otherwise. Switch it on under **Customize → Security findings**, where the count of findings for the loaded site is shown. Both demo sites load with it on.
+
+The section lists each concern with a severity (High, Medium, Low, Info), what was observed, the devices or rules concerned, and a recommendation. The summary page gets a one-line count with a link to the section, and the Technical template adds a **Checks performed** table.
+
+Checks are automated and read only what the import returned:
+
+| Area | Checks |
+|---|---|
+| Firewall | Rules allowing traffic in from the internet, guest zone into internal networks (UniFi); input and forward chains dropping unsolicited WAN traffic (RouterOS); port forwards, with remote-administration and file-sharing ports rated High; UPnP; intrusion prevention off (UniFi); SOCKS or web proxy (RouterOS); disabled rules left in place |
+| Remote access | PPTP or L2TP servers |
+| Wi-Fi | Open networks, WEP or first-generation WPA, WPA2-only |
+| Management (RouterOS) | Telnet, FTP, HTTP and unencrypted API; services with no source-address limit; default `admin` account; SNMP community `public`; MAC-Telnet and MAC-WinBox on all interfaces; SSH strong crypto |
+| Segmentation | IoT and media devices on the same network as computers; device management addresses on client networks; internal and public DNS resolvers in one DHCP scope |
+| Inventory | Unidentified devices and randomized-address devices on internal networks; network equipment that is not managed |
+| Maintenance | Firmware or RouterOS updates available; RouterBOARD firmware behind RouterOS |
+
+How to read it:
+
+- A finding is an indication to review, not a verdict. This is not a penetration test or a compliance audit, and a check without a finding does not prove the area is secure.
+- A check whose data was not returned (an endpoint the key or the read-only user could not read) is listed as **Not evaluated**, never as passed.
+- Findings contain no credentials. User names and SNMP community strings are printed only when they are the vendor default.
+- The inventory and IoT checks rest on passive device identification, so they inherit its limits.
+- Snapshots saved before this section existed have no results; import the site again.
+
+For the findings, the import reads two more UniFi endpoints (`rest/portforward`, `rest/setting`) and eleven more RouterOS menus (services, users, UPnP, SNMP, MAC server, SSH, proxy, package update). `npm run verify` exercises every check three ways: raised by the demo, cleared by a corrected copy, and not evaluated when its data is missing.
+
 ## File tree
 
 ```
@@ -153,6 +181,7 @@ src/
     unifi-normalize.ts / mikrotik-normalize.ts   vendor normalizers
     normalize-common.ts              sanitizer, formatters, finalizeSnapshot (KPIs + identification)
     identify.ts, oui.ts              passive device identification
+    findings.ts, findings-unifi.ts, findings-mikrotik.ts   optional security findings (checks + assembly)
     paginate.ts                      deterministic paginator (paginateSnapshot)
     strings.ts, themes.ts, markdown.tsx
   data/
@@ -161,7 +190,7 @@ src/
     mock-snapshot.ts                 demo snapshot builders
   types/unifi-documentation.ts       vendor-neutral model
 scripts/
-  verify-mock.ts, plan-pages.ts, export-demo-pdf.ts, update-oui.ts
+  verify-mock.ts, verify-findings.ts, plan-pages.ts, export-demo-pdf.ts, update-oui.ts
   fetch_unifi_photos.py              techspecs.ui.com photos → public/hardware/unifi (+ screen/wordmark clean-up)
   mock-unifi-server.ts               mock UniFi OS console (HTTPS) + optional Site Manager mock
   mock-routeros-server.ts            mock RouterOS REST API (HTTPS, Basic auth), one port per device

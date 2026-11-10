@@ -143,6 +143,27 @@ const PILL: Record<string, [string, string, string]> = {
   unknown: ["#f1f5f9", "#64748b", "#cbd5e1"],
 };
 
+const SEVERITY: Record<string, [string, string, string]> = {
+  High: ["#fee2e2", "#b91c1c", "#fca5a5"],
+  Medium: ["#ffedd5", "#c2410c", "#fdba74"],
+  Low: ["#fef9c3", "#854d0e", "#fde047"],
+  Info: ["#e0f2fe", "#075985", "#7dd3fc"],
+};
+
+/** Severity of a security finding. (Not ActionPill: there "High" means high confidence and is green.) */
+export function SeverityPill({ severity }: { severity: string }) {
+  const [bg, fg, border] = SEVERITY[severity] ?? ["#f1f5f9", "#334155", "#cbd5e1"];
+  return (
+    <span
+      className="inline-block rounded-[1mm] font-semibold tracking-wide"
+      style={{ padding: "0.3mm 1.6mm", fontSize: "6pt", lineHeight: 1.25, background: bg, color: fg, border: `0.5pt solid ${border}` }}
+    >
+      {severity}
+    </span>
+  );
+}
+export const severityColor = (severity: string) => (SEVERITY[severity] ?? ["", "#334155"])[1];
+
 /** Coloured pill for firewall actions (ALLOW/BLOCK, accept/drop, NAT) and confidence levels. */
 export function ActionPill({ action }: { action: string }) {
   const [bg, fg, border] = PILL[action.toLowerCase()] ?? ["#f1f5f9", "#334155", "#cbd5e1"];

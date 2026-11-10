@@ -102,6 +102,9 @@ export function networkEndpoints(site: string, historyDays: number): PlannedEndp
     { key: "vpnServers", paths: [`v2/api/site/${site}/vpn/servers`] },
     { key: "firewallPolicies", paths: [`v2/api/site/${site}/firewall-policies`] },
     { key: "firewallZones", paths: [`v2/api/site/${site}/firewall/zones`, `v2/api/site/${site}/firewall/zone`] },
+    // read for the optional security findings (secrets in rest/setting are stripped on arrival)
+    { key: "portForwards", paths: [`api/s/${site}/rest/portforward`] },
+    { key: "settings", paths: [`api/s/${site}/rest/setting`, `api/s/${site}/get/setting`] },
   ];
 }
 

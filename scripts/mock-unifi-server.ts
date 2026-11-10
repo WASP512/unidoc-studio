@@ -34,6 +34,8 @@ const routes: Record<string, unknown> = {
   "/proxy/network/api/s/default/stat/sta": legacy(raw.clients),
   // classic controllers accept POST {type, conn, within} on stat/alluser
   "/proxy/network/api/s/default/stat/alluser": legacy(raw.knownClients ?? raw.clients),
+  "/proxy/network/api/s/default/rest/portforward": legacy(raw.portForwards),
+  "/proxy/network/api/s/default/rest/setting": legacy(raw.settings),
   "/proxy/network/v2/api/site/default/firewall-policies": raw.firewallPolicies,
   "/proxy/network/v2/api/site/default/firewall/zone": raw.firewallZones,
 };

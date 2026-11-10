@@ -36,4 +36,16 @@ export const ROUTEROS_ENDPOINTS: [string, string][] = [
   ["wirelessRegistrations", "interface/wireless/registration-table"],
   ["securityProfiles", "interface/wireless/security-profiles"],
   ["netwatch", "tool/netwatch"],
+  // read for the optional security findings (management exposure, accounts, maintenance)
+  ["services", "ip/service"],
+  ["users", "user"],
+  ["upnp", "ip/upnp"],
+  ["snmp", "snmp"],
+  ["snmpCommunities", "snmp/community"],
+  ["macServer", "tool/mac-server"],
+  ["macWinbox", "tool/mac-server/mac-winbox"],
+  ["ssh", "ip/ssh"],
+  ["socks", "ip/socks"],
+  ["proxy", "ip/proxy"],
+  ["packageUpdate", "system/package/update"],
 ];

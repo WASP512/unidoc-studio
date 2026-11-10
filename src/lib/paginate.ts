@@ -13,6 +13,7 @@ import type {
   ClientRow,
   DeviceCategory,
   FirewallRule,
+  Finding,
   ReportConfig,
   SiteDocumentationSnapshot,
   WanSummary,
@@ -58,6 +59,10 @@ export const H = {
   identTypeRow: 6.4,
   tocLine1: 5.6,
   tocLine2: 4.5,
+  findingsSummary: 21,
+  findingsNote: 11,
+  findingLine: 3.1,
+  findingPad: 3.4,
 } as const;
 
 /* ------------------------------------------------------------------ plan types */
@@ -82,13 +87,15 @@ export type TableKind =
   | "firewall"
   | "filter"
   | "nat"
-  | "ident";
+  | "ident"
+  | "findings"
+  | "checks";
 
-export type ComponentKind = "undetermined" | "footnote" | "gatewayCard" | "empty" | "identKpis" | "identMethod" | "identTypes";
+export type ComponentKind = "undetermined" | "footnote" | "gatewayCard" | "empty" | "identKpis" | "identMethod" | "identTypes" | "findingsSummary" | "findingsNote";
 
 export type FlowBlock =
   | { type: "heading"; level: 1 | 2; text: string }
-  | { type: "table"; table: TableKind; rows: unknown[]; rowHeight: (row: unknown) => number; deviceId?: string }
+  | { type: "table"; table: TableKind; rows: unknown[]; rowHeight: (row: unknown) => number; deviceId?: string; tall?: boolean }
   | { type: "component"; component: ComponentKind; height: number; text?: string };
 
 export type PageItem =
@@ -122,6 +129,22 @@ export function undeterminedHeight(count: number): number {
   return H.undeterminedHeader + Math.ceil(count / 4) * H.undeterminedRow + H.undeterminedPad;
 }
 
+/* Findings table: rows wrap, so their height is planned from the text. The
+ * characters-per-line figures are deliberately low for the column widths in
+ * ReportDocument (findingColumns) so a row is never shorter than its content. */
+export const FINDING_AFFECTED_MAX = 8;
+const FINDING_CPL = { title: 27, observed: 47, recommendation: 38 };
+const wrapLines = (text: string, cpl: number) => Math.max(1, Math.ceil(text.length / cpl));
+
+export function findingRowHeight(f: Finding): number {
+  const shown = f.affected.slice(0, FINDING_AFFECTED_MAX);
+  const more = f.affected.length > shown.length ? 1 : 0;
+  const title = wrapLines(f.title, FINDING_CPL.title) + 1; // + category line
+  const observed = wrapLines(f.observed, FINDING_CPL.observed) + shown.reduce((n, a) => n + wrapLines(a, FINDING_CPL.observed - 3), 0) + more + (shown.length ? 0.5 : 0);
+  const recommendation = wrapLines(f.recommendation, FINDING_CPL.recommendation);
+  return Math.max(title, observed, recommendation) * H.findingLine + H.findingPad;
+}
+
 export const IDENT_TYPE_COLS = 4;
 export function identTypesHeight(categories: number): number {
   return H.identTypeHeader + Math.ceil(Math.max(1, categories) / IDENT_TYPE_COLS) * H.identTypeRow + 2;
@@ -133,8 +156,10 @@ const MIN_ROWS = 4;
 /** Tables up to this many rows are kept on one page rather than split. */
 const KEEP_WHOLE_ROWS = 8;
 
-function tableMinHeight(rows: unknown[], rowHeight: (r: never) => number, cap: number): number {
+/** `tall` tables (rows of wrapped text) may start with a single row and are never held back to stay whole. */
+function tableMinHeight(rows: unknown[], rowHeight: (r: never) => number, cap: number, tall = false): number {
   const sum = (n: number) => rows.slice(0, n).reduce<number>((s, r) => s + rowHeight(r as never), 0);
+  if (tall) return H.thead + sum(Math.min(1, rows.length));
   const whole = H.thead + sum(rows.length);
   if (rows.length <= KEEP_WHOLE_ROWS && whole <= cap) return whole;
   return H.thead + sum(Math.min(MIN_ROWS, rows.length));
@@ -143,7 +168,7 @@ function tableMinHeight(rows: unknown[], rowHeight: (r: never) => number, cap: n
 function blockMinHeight(b: FlowBlock): number {
   if (b.type === "heading") return b.level === 1 ? H.h1 : H.h2;
   if (b.type === "component") return b.height;
-  return tableMinHeight(b.rows, b.rowHeight as (r: never) => number, CONTENT_CAP);
+  return tableMinHeight(b.rows, b.rowHeight as (r: never) => number, CONTENT_CAP, b.tall);
 }
 
 /* ------------------------------------------------------------------ core paginator */
@@ -191,7 +216,7 @@ export function paginateFlows(flows: FlowBlock[][], cap = CONTENT_CAP): ReportPa
       let rows = block.rows;
       let continued = false;
       while (rows.length) {
-        const min = tableMinHeight(rows, block.rowHeight as (r: never) => number, cap);
+        const min = tableMinHeight(rows, block.rowHeight as (r: never) => number, cap, block.tall);
         if (used > 0 && used + min > cap) newPage();
         let h = H.thead;
         const heights: number[] = [];
@@ -204,7 +229,7 @@ export function paginateFlows(flows: FlowBlock[][], cap = CONTENT_CAP): ReportPa
           n++;
         }
         // avoid one or two orphan rows on the next page when we can pull rows back
-        while (rows.length - n > 0 && rows.length - n < 3 && n > MIN_ROWS) {
+        while (!block.tall && rows.length - n > 0 && rows.length - n < 3 && n > MIN_ROWS) {
           n--;
           h -= heights.pop()!;
         }
@@ -339,6 +364,24 @@ export function buildFlows(snapshot: SiteDocumentationSnapshot, config: ReportCo
     b.push(snapshot.dhcp.length ? { type: "table", table: "dhcp", rows: snapshot.dhcp, rowHeight: row } : empty(t("empty.generic")));
   }
 
+  /* ---- flow F: security findings (optional, every template; placed before identification) */
+  const f: FlowBlock[] = [];
+  if (config.includeFindings) {
+    f.push({ type: "heading", level: 1, text: t("sec.findings") });
+    const report = snapshot.findings;
+    if (!report) f.push(empty(t("findings.notEvaluated")));
+    else {
+      f.push({ type: "component", component: "findingsSummary", height: H.findingsSummary });
+      f.push({ type: "component", component: "findingsNote", height: H.findingsNote });
+      if (report.findings.length) f.push({ type: "table", table: "findings", rows: report.findings, rowHeight: (r) => findingRowHeight(r as Finding), tall: true });
+      else f.push(empty(t("findings.none", { n: report.checks.filter((c) => c.result !== "Not evaluated").length })));
+      if (tpl === "technical" && report.checks.length) {
+        f.push({ type: "heading", level: 2, text: t("sec.checks") });
+        f.push({ type: "table", table: "checks", rows: report.checks, rowHeight: fixedRow(H.row) });
+      }
+    }
+  }
+
   /* ---- flow E: device identification (optional, every template) */
   const e: FlowBlock[] = [];
   if (config.includeIdentification && snapshot.clients.length) {
@@ -351,7 +394,7 @@ export function buildFlows(snapshot: SiteDocumentationSnapshot, config: ReportCo
   }
 
   // One continuous flow: sections follow each other without forced page breaks.
-  if (tpl === "executive") return [[...a, ...b, ...e]];
+  if (tpl === "executive") return [[...a, ...b, ...f, ...e]];
 
   /* ---- flow C: clients + health */
   const c: FlowBlock[] = [
@@ -389,7 +432,7 @@ export function buildFlows(snapshot: SiteDocumentationSnapshot, config: ReportCo
     d.push(rules.length ? { type: "table", table: "firewall", rows: rules, rowHeight: fixedRow(H.fwRow) } : empty(t(tpl === "technical" ? "empty.firewall" : "empty.firewallCustom")));
   }
 
-  return [[...a, ...b, ...c, ...d, ...e]];
+  return [[...a, ...b, ...c, ...d, ...f, ...e]];
 }
 
 /** Number of fixed pages before the flow: cover, contents, summary, topology. */

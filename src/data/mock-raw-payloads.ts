@@ -222,13 +222,13 @@ function rawDevices(clients: Rec[]): Rec[] {
   return [
     {
       _id: "5425d3f00000000000000002", type: "usw", model: "USPM48P", name: NAME.ch, mac: MAC.ch, ip: "10.64.1.11",
-      version: "7.5.15", state: 1, adopted: true, uptime: dh(62, 7), "system-stats": { cpu: "12.5", mem: "16.9" },
+      version: "7.5.15", state: 1, adopted: true, upgradable: true, upgrade_to_firmware: "7.6.4", uptime: dh(62, 7), "system-stats": { cpu: "12.5", mem: "16.9" },
       sys_stats: { loadavg_1: "0.95" }, uplink: { uplink_mac: MAC.gw, uplink_remote_port: 11, port_idx: 49, speed: 10000 },
       port_table: portTable(48, 4, CH_UP, (p) => (p >= 25 && p <= 32) || p >= 41), ...secretNoise,
     },
     {
       _id: "5425d3f00000000000000003", type: "usw", model: "USPM24P", name: NAME.pd, mac: MAC.pd, ip: "10.64.1.12",
-      version: "7.5.15", state: 1, adopted: true, uptime: dh(34, 22), "system-stats": { cpu: "17", mem: "14.7" },
+      version: "7.5.15", state: 1, adopted: true, upgradable: true, upgrade_to_firmware: "7.6.4", uptime: dh(34, 22), "system-stats": { cpu: "17", mem: "14.7" },
       sys_stats: { loadavg_1: "1.05" }, uplink: { uplink_mac: MAC.ch, uplink_remote_port: 52, port_idx: 26, speed: 10000 },
       port_table: portTable(24, 2, PD_UP, (p) => p > 8), ...secretNoise,
     },
@@ -246,7 +246,7 @@ function rawDevices(clients: Rec[]): Rec[] {
     },
     {
       _id: "5425d3f00000000000000001", type: "udm", model: "UDMPROSE", name: NAME.gw, mac: MAC.gw, ip: "192.0.2.44",
-      wan1: { ip: "192.0.2.44", type: "dhcp", up: true, speed: 2500, ifname: "eth8" }, version: "5.1.35", state: 1, adopted: true,
+      wan1: { ip: "192.0.2.44", type: "dhcp", up: true, speed: 2500, ifname: "eth8" }, version: "5.1.35", state: 1, adopted: true, upgradable: false,
       port_table: udmSePorts(),
       uptime: dh(2, 7), "system-stats": { cpu: "44.5", mem: "70.6" }, sys_stats: { loadavg_1: "2.65" },
       x_ssh_password: "demo-fake-ssh-password", ...secretNoise,
@@ -308,7 +308,7 @@ function rawWlans(): Rec[] {
   return [
     base("5301fb6ab1c94e3f0b21d8a1", "Demo-Secure", null, false),
     { ...base("5301fb6ab1c94e3f0b21d8a2", "DemoPublicAccess", "4b8a18adb1c94e3f0b21d7b4", true), radius_secret: "demo-fake-radius" },
-    base("5301fb6ab1c94e3f0b21d8a3", "Annex WIFI", "4b8a18adb1c94e3f0b21d7b5", true),
+    { ...base("5301fb6ab1c94e3f0b21d8a3", "Annex WIFI", "4b8a18adb1c94e3f0b21d7b5", true), wpa3_support: false, wpa3_transition: false },
     base("5301fb6ab1c94e3f0b21d8a4", "Office WIFI", "4b8a18adb1c94e3f0b21d7b6", true),
   ];
 }
@@ -446,6 +446,30 @@ function rawIspMetrics(): Rec[] {
   return [{ metricType: "5m", hostId: MOCK_HOST_ID, siteId: MOCK_CLOUD_SITE_ID, periods }];
 }
 
+/* ------------------------------------------------------------------ port forwards + gateway settings */
+
+const ipOf = (label: string) => CLIENTS.find(([l]) => l === label)?.[1] ?? "";
+
+function rawPortForwards(): Rec[] {
+  const pf = (name: string, port: string, to: string, toPort: string, extra: Rec = {}): Rec => ({
+    _id: `pf${port}`, name, enabled: true, pfwd_interface: "wan", src: "any", dst_port: port, fwd: to, fwd_port: toPort, proto: "tcp", log: false, ...extra,
+  });
+  return [
+    pf("Lobby camera web view", "8443", ipOf("Verkada-Lobby-Cam"), "443"),
+    pf("RDP to Finance PC", "3389", ipOf("Finance PC"), "3389"),
+    pf("Vendor SFTP (old)", "2222", ipOf("DC01"), "22", { enabled: false }),
+  ];
+}
+
+function rawSettings(): Rec[] {
+  return [
+    { _id: "set-usg", key: "usg", upnp_enabled: true, upnp_nat_pmp_enabled: true, upnp_secure_mode: true },
+    { _id: "set-ips", key: "ips", ips_mode: "disabled" },
+    { _id: "set-mgmt", key: "mgmt", auto_upgrade: false, x_ssh_enabled: true, x_ssh_username: "demo-fake-ssh-user", x_ssh_password: "demo-fake-ssh-setting" },
+    { _id: "set-radius", key: "radius", enabled: false, x_secret: "demo-fake-radius-setting" },
+  ];
+}
+
 /* ------------------------------------------------------------------ assembled payloads */
 
 export function mockRawPayloads(): Required<RawSitePayloads> {
@@ -464,6 +488,8 @@ export function mockRawPayloads(): Required<RawSitePayloads> {
     firewallPolicies: fw.policies,
     firewallZones: fw.zones,
     ispMetrics: rawIspMetrics(),
+    portForwards: rawPortForwards(),
+    settings: rawSettings(),
   };
 }
 

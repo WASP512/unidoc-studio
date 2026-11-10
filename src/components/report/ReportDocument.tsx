@@ -14,11 +14,13 @@ import type {
   ChainRule,
   ClientRow,
   DhcpRow,
+  Finding,
   FirewallRule,
   NeighborRow,
   NetworkRow,
   ReportConfig,
   RouterDevice,
+  SecurityCheck,
   SiteDocumentationSnapshot,
   SiteToSiteTunnel,
   SwitchDevice,
@@ -32,6 +34,7 @@ import { formatAgo, formatDate, formatDateTime, formatNumber, t, VENDOR_LABEL, t
 import {
   allDevices,
   buildToc,
+  FINDING_AFFECTED_MAX,
   CONTENT_BOTTOM,
   CONTENT_TOP,
   FOOTER_H,
@@ -53,7 +56,8 @@ import {
 import { THEMES } from "@/lib/themes";
 import { themeStyle } from "@/lib/themes";
 import { Markdown } from "@/lib/markdown";
-import { ActionPill, ReportTable, Status, type Column } from "./ReportTable";
+import { ActionPill, ReportTable, SeverityPill, severityColor, Status, type Column } from "./ReportTable";
+import { SEVERITIES, severityCounts } from "@/lib/findings";
 import { DeviceSummaryTable, NetworkTopologySection, TopologyFootnote, UndeterminedRelationshipBlock } from "./NetworkTopologySection";
 
 interface Ctx {
@@ -680,7 +684,32 @@ function SummaryPage({ ctx }: { ctx: Ctx }) {
           />
         </div>
       )}
+
+      {ctx.config.includeFindings && snapshot.findings && <FindingsStrip ctx={ctx} />}
     </div>
+  );
+}
+
+/** One-line pointer on the summary page to the findings section. */
+function FindingsStrip({ ctx }: { ctx: Ctx }) {
+  const counts = severityCounts(ctx.snapshot.findings);
+  const entry = ctx.toc.find((e) => e.level === 1 && e.text === t("sec.findings"));
+  return (
+    <Card className="flex items-center justify-between" style={{ marginTop: "6mm", padding: "3.2mm 5mm" }}>
+      <div className="flex items-center gap-[4mm]">
+        <span className="text-[9pt] font-semibold text-[color:var(--r-heading)]">{t("findings.summary")}</span>
+        {SEVERITIES.map((sev) => (
+          <span key={sev} className="flex items-center gap-[1.4mm] text-[8.4pt] font-semibold tabular-nums" style={{ opacity: counts[sev] ? 1 : 0.45 }}>
+            {counts[sev]} <SeverityPill severity={sev} />
+          </span>
+        ))}
+      </div>
+      {entry && (
+        <a href={`#${entry.id}`} className="text-[7.4pt] text-[color:var(--r-muted)] no-underline">
+          {t("findings.summaryPage", { page: entry.page })}
+        </a>
+      )}
+    </Card>
   );
 }
 
@@ -745,6 +774,14 @@ function FlowItem({ ctx, item }: { ctx: Ctx; item: PageItem }) {
           return <p className="pt-[1mm] text-[7pt] leading-[1.4] text-[color:var(--r-muted)]">{t("ident.method", { days: snapshot.meta.historyDays })}</p>;
         case "identTypes":
           return <IdentTypes ctx={ctx} />;
+        case "findingsSummary":
+          return <FindingsSummary ctx={ctx} />;
+        case "findingsNote":
+          return (
+            <p className="pt-[0.6mm] text-[7pt] leading-[1.42] text-[color:var(--r-muted)]">
+              {t("findings.method", { date: formatDate(snapshot.meta.capturedAt, ctx.tz) })}
+            </p>
+          );
         default:
           return (
             <Card className="flex h-[calc(100%-1mm)] items-center" style={{ padding: "0 5mm" }}>
@@ -791,6 +828,97 @@ function GatewayCard({ ctx, height }: { ctx: Ctx; height: number }) {
       ))}
     </Card>
   );
+}
+
+/* ================================================================== security findings section */
+
+function FindingsSummary({ ctx }: { ctx: Ctx }) {
+  const report = ctx.snapshot.findings;
+  const counts = severityCounts(report);
+  const evaluated = report?.checks.filter((c) => c.result !== "Not evaluated").length ?? 0;
+  const skipped = (report?.checks.length ?? 0) - evaluated;
+  return (
+    <div className="grid grid-cols-5" style={{ gap: "2.6mm", height: `${H.findingsSummary - 3}mm` }}>
+      {SEVERITIES.map((sev) => (
+        <div key={sev} className="flex flex-col justify-between rounded-md" style={{ background: "var(--r-soft)", border: "0.75pt solid var(--r-border)", padding: "2.4mm 3mm 2.6mm" }}>
+          <div>
+            <SeverityPill severity={sev} />
+          </div>
+          <div className="text-[15pt] leading-none font-bold tabular-nums" style={{ color: counts[sev] ? severityColor(sev) : "var(--r-muted)" }}>
+            {counts[sev]}
+          </div>
+        </div>
+      ))}
+      <div className="flex flex-col justify-between rounded-md" style={{ background: "var(--r-soft)", border: "0.75pt solid var(--r-border)", padding: "2.4mm 3mm 2.6mm" }}>
+        <Label className="leading-[1.2]">{t("findings.checksRun")}</Label>
+        <div className="flex items-baseline gap-[1.6mm]">
+          <span className="text-[15pt] leading-none font-bold text-[color:var(--r-heading)] tabular-nums">{evaluated}</span>
+          {skipped > 0 && <span className="text-[6.6pt] text-[color:var(--r-muted)]">{skipped} not evaluated</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const FINDING_LINE = `${H.findingLine}mm`;
+
+function findingColumns(): Column<Finding>[] {
+  return [
+    { key: "r", header: t("col.ref"), width: "6.5%", wrap: true, mono: true, render: (f) => <div style={{ lineHeight: FINDING_LINE }}>{f.ref}</div> },
+    { key: "s", header: t("col.severity"), width: "9.5%", wrap: true, render: (f) => <SeverityPill severity={f.severity} /> },
+    {
+      key: "t",
+      header: t("col.finding"),
+      width: "22%",
+      wrap: true,
+      render: (f) => (
+        <div style={{ lineHeight: FINDING_LINE }}>
+          <div className="font-semibold text-[color:var(--r-heading)]">{f.title}</div>
+          <div className="text-[color:var(--r-muted)]" style={{ fontSize: "0.92em" }}>
+            {f.category}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "o",
+      header: t("col.observed"),
+      width: "34%",
+      wrap: true,
+      render: (f) => {
+        const shown = f.affected.slice(0, FINDING_AFFECTED_MAX);
+        const more = f.affected.length - shown.length;
+        return (
+          <div style={{ lineHeight: FINDING_LINE }}>
+            <div>{f.observed}</div>
+            {shown.length > 0 && (
+              <ul style={{ marginTop: `${H.findingLine / 2}mm` }}>
+                {shown.map((a, i) => (
+                  <li key={i} className="flex gap-[1.2mm]" style={{ overflowWrap: "anywhere" }}>
+                    <span className="text-[color:var(--r-muted)]">•</span>
+                    <span className="min-w-0 font-medium">{a}</span>
+                  </li>
+                ))}
+                {more > 0 && <li className="text-[color:var(--r-muted)]">and {more} more</li>}
+              </ul>
+            )}
+          </div>
+        );
+      },
+    },
+    { key: "a", header: t("col.recommendation"), width: "28%", wrap: true, render: (f) => <div style={{ lineHeight: FINDING_LINE }}>{f.recommendation}</div> },
+  ];
+}
+
+const CHECK_COLOR: Record<string, string> = { Finding: "#c2410c", "No finding": "#15803d", "Not evaluated": "#64748b" };
+
+function checkColumns(): Column<SecurityCheck>[] {
+  return [
+    { key: "c", header: t("col.area"), width: "14%", render: (c) => c.category },
+    { key: "n", header: t("col.check"), width: "49%", bold: true, render: (c) => c.name },
+    { key: "r", header: t("col.result"), width: "13%", render: (c) => <span style={{ color: CHECK_COLOR[c.result], fontWeight: 600 }}>{c.result}</span> },
+    { key: "o", header: t("col.note"), width: "24%", render: (c) => <Muted>{c.note}</Muted> },
+  ];
 }
 
 /* ================================================================== identification section */
@@ -1283,6 +1411,10 @@ function FlowTable({ ctx, item }: { ctx: Ctx; item: Extract<PageItem, { type: "t
       return <ReportTable columns={cols} rows={item.rows as ChainRule[]} rowHeights={heights} fontPt={6} rowKey={(r) => r.id} />;
     }
 
+    case "findings":
+      return <ReportTable columns={findingColumns()} rows={item.rows as Finding[]} rowHeights={heights} fontPt={6.6} rowKey={(f) => f.ref} />;
+    case "checks":
+      return <ReportTable columns={checkColumns()} rows={item.rows as SecurityCheck[]} rowHeights={heights} fontPt={6.8} rowKey={(c) => c.id} />;
     case "ident":
       return <ReportTable columns={identColumns(ctx)} rows={item.rows as ClientRow[]} rowHeights={heights} fontPt={6.4} rowKey={(c) => c.mac} />;
   }

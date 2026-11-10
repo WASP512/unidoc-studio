@@ -4,6 +4,7 @@
  *   - id generation, formatters
  *   - `finalizeSnapshot`: KPIs, identification, leak redaction
  */
+import { assembleFindings, commonChecks, type CheckOutcome } from "./findings";
 import type {
   ClientRow,
   NormalizeContext,
@@ -252,10 +253,12 @@ export interface FinalizeInput extends Omit<SiteDocumentationSnapshot, "meta" | 
   aliasByMac?: Map<string, string>;
   lldpByMac?: Map<string, { platform?: string; description?: string; identity?: string; caps?: string }>;
   controllerVendorByMac?: Map<string, string>;
+  /** Vendor-specific security checks, run against the finished snapshot. */
+  vendorChecks?: (snapshot: SiteDocumentationSnapshot) => CheckOutcome[];
 }
 
 export function finalizeSnapshot(input: FinalizeInput): SiteDocumentationSnapshot {
-  const { vendor, ctx, capturedAt, timeZone, removedFields, secretValues, aliasByMac, lldpByMac, controllerVendorByMac, ...data } = input;
+  const { vendor, ctx, capturedAt, timeZone, removedFields, secretValues, aliasByMac, lldpByMac, controllerVendorByMac, vendorChecks, ...data } = input;
 
   const clients = data.clients.map((c) => ({
     ...c,
@@ -310,6 +313,7 @@ export function finalizeSnapshot(input: FinalizeInput): SiteDocumentationSnapsho
       devicesSeen: clients.length,
     },
   };
+  snapshot.findings = assembleFindings([...(vendorChecks?.(snapshot) ?? []), ...commonChecks(snapshot)]);
   return redactLeakedValues(snapshot, secretValues);
 }
 
