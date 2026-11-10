@@ -22,6 +22,10 @@ APP_HOME=/opt/unidoc-studio
 APP_DIR=$APP_HOME/app
 LOGIN_USER=${UNIDOC_USER:-unidoc}
 export DEBIAN_FRONTEND=noninteractive
+# The caller's locale (for example en_US.UTF-8 from a Proxmox host) usually does not
+# exist in a fresh container, which makes every package step print locale warnings.
+export LANG=C.UTF-8 LC_ALL=C.UTF-8
+unset LANGUAGE
 
 say() { printf '\n== %s\n' "$*"; }
 die() { printf '\nProvisioning stopped: %s\n' "$*" >&2; exit 1; }
@@ -53,6 +57,8 @@ install -d -o unidoc -g unidoc "$APP_DIR"
 tar -xzf "$SRC" -C "$APP_DIR" --strip-components=1 --no-same-owner
 chown -R unidoc:unidoc "$APP_HOME"
 LOG=/var/log/unidoc-studio-install.log
+echo "downloading dependencies and building: about 2 to 10 minutes, nothing is printed meanwhile"
+echo "(to watch it from another shell: tail -f $LOG inside this machine)"
 if ! runuser -u unidoc -- env HOME="$APP_HOME" bash "$APP_DIR/install.sh" > "$LOG" 2>&1; then
   tail -n 30 "$LOG" >&2
   die "the app did not build. Full log: $LOG"
