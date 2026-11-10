@@ -36,13 +36,10 @@ Defaults: next free container ID, hostname `unidoc-studio`, bridge `vmbr0`, DHCP
 
 The same installer works on any Debian 12 or 13 machine without Proxmox: `bash deploy/provision-debian.sh <source.tar.gz>` as root.
 
-To update an existing container, copy a new source archive into it and run the installer again; the login is kept:
+To update an existing container to the latest version (the login is kept), run on the Proxmox host:
 
 ```
-git pull && git archive --format=tar.gz --prefix=unidoc-studio/ -o unidoc-studio.tar.gz HEAD
-pct push <CTID> unidoc-studio.tar.gz /root/unidoc-src.tar.gz
-pct push <CTID> deploy/provision-debian.sh /root/provision-debian.sh
-pct exec <CTID> -- bash /root/provision-debian.sh /root/unidoc-src.tar.gz
+pct exec <CTID> -- bash -c "curl -fsSL https://raw.githubusercontent.com/WASP512/unidoc-studio/main/deploy/update.sh | bash"
 ```
 
 Tested: the in-container installer on Debian 12 and 13 containers (service start, HTTPS login, PDF export, re-run). The Proxmox part (`pct create` and friends) has only been dry-run against stand-in commands, not on a Proxmox host.

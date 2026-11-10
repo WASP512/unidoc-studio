@@ -91,7 +91,9 @@ async function postJson<T>(url: string, body: unknown, apiKey: string | null, si
     headers: { "Content-Type": "application/json", ...(apiKey ? { "X-UniFi-Api-Key": apiKey } : {}), ...(extraHeaders ?? {}) },
     body: JSON.stringify(body),
     cache: "no-store",
-    credentials: "omit",
+    // same-origin, not "omit": behind a login proxy the browser must be allowed to send
+    // its saved login, or the proxy answers 401. The app itself sets no cookies.
+    credentials: "same-origin",
     referrerPolicy: "no-referrer",
     signal,
   });
@@ -306,7 +308,7 @@ export default function StudioPage() {
     setKeyWiped(false);
     setError(null);
     try {
-      const res = await fetch(`/api/demo?vendor=${vendor}`, { cache: "no-store", credentials: "omit" });
+      const res = await fetch(`/api/demo?vendor=${vendor}`, { cache: "no-store", credentials: "same-origin" });
       if (!res.ok) throw new Error(`Demo failed to load (${res.status})`);
       const { snapshot: s, config: demoConfig } = (await res.json()) as ImportResponse & { config?: Partial<ReportConfig> };
       loadSnapshot(s, (c) => ({ ...demoDefaults(c), ...(demoConfig ?? {}) }));
@@ -348,7 +350,7 @@ export default function StudioPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
         cache: "no-store",
-        credentials: "omit",
+        credentials: "same-origin",
       });
       if (!res.ok) throw new Error(((await res.json().catch(() => ({}))) as { error?: string }).error ?? `Export failed (${res.status})`);
       const blob = await res.blob();
