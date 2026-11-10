@@ -79,8 +79,11 @@ TEMPLATE_STORAGE=${TEMPLATE_STORAGE:-$(pvesm status --content vztmpl 2>/dev/null
 
 say "Preparing the Debian template"
 pveam update >/dev/null 2>&1 || true
-TEMPLATE=$(pveam available --section system 2>/dev/null | awk '{print $2}' | grep -E '^debian-1[23]-standard' | sort -V | tail -n 1 || true)
-[ -n "$TEMPLATE" ] || die "no Debian 12 or 13 template is offered by this Proxmox host (pveam available --section system)."
+# The template list can hold several CPU architectures; only this host's will start.
+ARCH=$(dpkg --print-architecture 2>/dev/null || true)
+case "$ARCH" in amd64|arm64) ;; *) die "unsupported host architecture '${ARCH:-unknown}' (expected amd64 or arm64)." ;; esac
+TEMPLATE=$(pveam available --section system 2>/dev/null | awk '{print $2}' | grep -E "^debian-1[23]-standard_.*_${ARCH}\.tar" | sort -V | tail -n 1 || true)
+[ -n "$TEMPLATE" ] || die "no Debian 12 or 13 template for $ARCH is offered by this Proxmox host (pveam available --section system)."
 if ! pveam list "$TEMPLATE_STORAGE" 2>/dev/null | grep -q "$TEMPLATE"; then
   pveam download "$TEMPLATE_STORAGE" "$TEMPLATE" >/dev/null || die "could not download $TEMPLATE to $TEMPLATE_STORAGE."
 fi
@@ -92,10 +95,15 @@ if [ -n "${CT_VLAN:-}" ]; then NET="$NET,tag=$CT_VLAN"; fi
 
 say "Creating container $CTID ($CT_HOSTNAME) on $CT_STORAGE"
 pct create "$CTID" "$TEMPLATE_STORAGE:vztmpl/$TEMPLATE" \
-  --hostname "$CT_HOSTNAME" --ostype debian --unprivileged 1 --features nesting=1 \
+  --hostname "$CT_HOSTNAME" --ostype debian --arch "$ARCH" --unprivileged 1 --features nesting=1 \
   --cores "$CT_CORES" --memory "$CT_MEMORY" --swap 512 --rootfs "$CT_STORAGE:$CT_DISK" \
-  --net0 "$NET" --onboot 1 --tags unidoc >/dev/null
-pct start "$CTID"
+  --net0 "$NET" --onboot 1 --tags unidoc >/dev/null ||
+  die "could not create container $CTID."
+if ! pct start "$CTID"; then
+  # Nothing has run in it yet, so remove the container this script just created.
+  pct destroy "$CTID" >/dev/null 2>&1 && removed="It was removed again." || removed="Remove it with: pct destroy $CTID"
+  die "container $CTID did not start (template $TEMPLATE, storage $CT_STORAGE, bridge $CT_BRIDGE). $removed"
+fi
 
 say "Waiting for the container's network"
 ready=""

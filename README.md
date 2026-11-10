@@ -116,7 +116,7 @@ The photos carry no packaging, callouts or overlaid text:
 - Devices with a front display (UX, UX7, UCG Max/Ultra/Fiber, UDR, UDR7, UDR-5G-Max, UDW, UTR, UTR-LR, AirWire) have the screen switched off and the printed model name removed, so no screen readouts appear.
 - Rack faceplates still carry their tiny factory markings (model name under the display, port numbers). These are a few pixels high and not readable at report size.
 
-The photos are Ubiquiti's. Fine for internal documentation of your own equipment; don't publish the repository with them.
+The photos are Ubiquiti's product images, used here only to depict Ubiquiti's own products. They are not covered by any licence of this repository; if Ubiquiti objects, delete `public/hardware/unifi/` and set `src/data/unifi-photos.json` to `[]`; the report then uses drawn illustrations.
 
 ## Device identification
 
