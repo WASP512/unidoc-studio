@@ -23,6 +23,8 @@ export default function PrintPage() {
   useEffect(() => {
     const p = window.__UNIDOC_PAYLOAD__;
     if (p) {
+      // Read once after hydration: the payload is injected into the window by the PDF renderer, not available on the server.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPayload(p);
       delete window.__UNIDOC_PAYLOAD__;
     }

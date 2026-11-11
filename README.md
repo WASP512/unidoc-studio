@@ -1,10 +1,10 @@
 # UniDoc Studio
 
-Next.js 15 (App Router, TypeScript, Tailwind v4) app that imports a **UniFi** site (ephemeral API key) or a set of **MikroTik RouterOS 7** devices (read-only REST user), normalizes everything into one sanitized, vendor-neutral `SiteDocumentationSnapshot`, and exports a paginated A4 PDF report rendered by headless Chromium. English only.
+Next.js 16 (App Router, TypeScript, Tailwind v4) app that imports a **UniFi** site (ephemeral API key) or a set of **MikroTik RouterOS 7** devices (read-only REST user), normalizes everything into one sanitized, vendor-neutral `SiteDocumentationSnapshot`, and exports a paginated A4 PDF report rendered by headless Chromium. English only.
 
 ## Install
 
-Built for Windows, macOS and Linux (tested on Linux so far). You need **Node.js 22.6 or later** and one of **Chrome, Chromium or Edge** (used headless for the PDF; Edge is already on Windows).
+Built for Windows, macOS and Linux (tested on Linux so far). You need **Node.js 22.13 or later** (26 LTS recommended; 22 reaches end of life in April 2027) and one of **Chrome, Chromium or Edge** (used headless for the PDF; Edge is already on Windows).
 
 1. Get the code: `git clone https://github.com/WASP512/unidoc-studio.git`, or on [GitHub](https://github.com/WASP512/unidoc-studio) use **Code → Download ZIP** and unzip it.
 2. Install:
@@ -35,6 +35,18 @@ Or, from a copy of this repository on the host, `bash deploy/proxmox-install.sh`
 Defaults: next free container ID, hostname `unidoc-studio`, bridge `vmbr0`, DHCP, 2 cores, 2 GB RAM, 8 GB disk. Override with environment variables in front of the command, for example `curl -fsSL <url> | CT_IP=192.168.1.50/24 CT_GATEWAY=192.168.1.1 CT_VLAN=20 bash`; the full list is at the top of the script. Give the container a fixed address (static, or a DHCP reservation): the certificate is issued for the address it has at install time.
 
 The same installer works on any Debian 12 or 13 machine without Proxmox: `bash deploy/provision-debian.sh <source.tar.gz>` as root.
+
+### What an update brings up to date
+
+Each update (button or command) also updates what the app runs on, not only the app:
+
+- **Node.js** from the NodeSource repository, on the release line named in `deploy/provision-debian.sh` (`NODE_MAJOR`, now 26 LTS, supported to April 2029). An install made on an older line is moved to it.
+- **Chromium, Caddy, curl and certificates** from Debian, to the newest version Debian offers. Caddy in Debian 12 and 13 is 2.6: old upstream, but patched by Debian's security team. The installer uses the login directive that the installed Caddy understands.
+- **npm packages** exactly as pinned in `package-lock.json`.
+
+It does not upgrade the rest of the operating system. For that, run `apt-get update && apt-get -y upgrade` in the container now and then, or install `unattended-upgrades`.
+
+To check the npm side yourself: `npm outdated`, `npm audit`, and `grep -c '"deprecated"' package-lock.json` (0 at the time of writing). Two packages are held one major version back on purpose: TypeScript 6 (the linter's TypeScript support stops below 6.1) and `@types/node` 22 (it follows the oldest Node.js the app supports).
 
 ### Updating
 
@@ -228,7 +240,7 @@ The app has no login of its own, so anyone who can reach it can use whatever net
 
 ### On a server
 
-The quickest route on a server is `docker compose up -d --build` (see "Install"). To run it as a systemd service instead you need Linux, Node.js 22.6 or later, git, and Chrome or Chromium. The server needs to reach the devices it documents: the UniFi console on 443, RouterOS devices on their `www-ssl` port, and `api.ui.com` only for Cloud Proxy mode.
+The quickest route on a server is `docker compose up -d --build` (see "Install"). To run it as a systemd service instead you need Linux, Node.js 22.13 or later, git, and Chrome or Chromium. The server needs to reach the devices it documents: the UniFi console on 443, RouterOS devices on their `www-ssl` port, and `api.ui.com` only for Cloud Proxy mode.
 
 ```
 sudo useradd --system --create-home --home-dir /opt/unidoc-studio --shell /usr/sbin/nologin unidoc

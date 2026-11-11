@@ -420,6 +420,7 @@ export default function StudioPage() {
             apiKey={apiKey}
             setApiKey={setApiKey}
             keyInputRef={keyInputRef}
+            mtPasswordRef={mtPasswordRef}
             controllerUrl={controllerUrl}
             setControllerUrl={setControllerUrl}
             discovery={discovery}
@@ -443,7 +444,6 @@ export default function StudioPage() {
               setUser: setMtUser,
               password: mtPassword,
               setPassword: setMtPassword,
-              passwordRef: mtPasswordRef,
               allowHttp: mtAllowHttp,
               setAllowHttp: setMtAllowHttp,
               discovery: mtDiscovery,
@@ -648,6 +648,7 @@ interface StepImportProps {
   apiKey: string;
   setApiKey: (k: string) => void;
   keyInputRef: React.RefObject<HTMLInputElement | null>;
+  mtPasswordRef: React.RefObject<HTMLInputElement | null>;
   controllerUrl: string;
   setControllerUrl: (v: string) => void;
   discovery: DiscoveryResponse | null;
@@ -670,7 +671,7 @@ interface StepImportProps {
   onResume: () => void;
 }
 
-function StepImport(p: StepImportProps) {
+function StepImport({ keyInputRef, mtPasswordRef, ...p }: StepImportProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const consoleOptions = (p.discovery?.consoles ?? []).map((c) => ({
     value: c.hostId,
@@ -718,7 +719,7 @@ function StepImport(p: StepImportProps) {
           </div>
 
           {p.mode === "mikrotik" ? (
-            <MikrotikForm mt={p.mt} busy={p.busy} pins={p.pins} setPins={p.setPins} historyDays={p.historyDays} setHistoryDays={p.setHistoryDays} onCancel={p.onCancel} />
+            <MikrotikForm mt={p.mt} passwordRef={mtPasswordRef} busy={p.busy} pins={p.pins} setPins={p.setPins} historyDays={p.historyDays} setHistoryDays={p.setHistoryDays} onCancel={p.onCancel} />
           ) : (
           <>
           <form
@@ -758,7 +759,7 @@ function StepImport(p: StepImportProps) {
               }
             >
               <input
-                ref={p.keyInputRef}
+                ref={keyInputRef}
                 type="password"
                 name="unidoc-ephemeral-key"
                 className={`${inputCls} font-mono`}
@@ -1228,7 +1229,6 @@ interface MikrotikFormProps {
   setUser: (v: string) => void;
   password: string;
   setPassword: (v: string) => void;
-  passwordRef: React.RefObject<HTMLInputElement | null>;
   allowHttp: boolean;
   setAllowHttp: (v: boolean) => void;
   discovery: MikrotikDiscoveryResponse | null;
@@ -1239,6 +1239,7 @@ interface MikrotikFormProps {
 
 function MikrotikForm({
   mt,
+  passwordRef,
   busy,
   pins,
   setPins,
@@ -1247,6 +1248,7 @@ function MikrotikForm({
   onCancel,
 }: {
   mt: MikrotikFormProps;
+  passwordRef: React.RefObject<HTMLInputElement | null>;
   busy: Busy;
   pins: string;
   setPins: (v: string) => void;
@@ -1293,7 +1295,7 @@ function MikrotikForm({
           </Field>
           <Field label="Password" hint="Held in memory only.">
             <input
-              ref={mt.passwordRef}
+              ref={passwordRef}
               type="password"
               name="unidoc-ephemeral-routeros"
               className={`${inputCls} font-mono`}

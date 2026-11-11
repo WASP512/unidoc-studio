@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 process.chdir(root);
 const checkOnly = process.argv.includes("--check");
-const MIN_NODE = [22, 6];
+const MIN_NODE = [22, 13];
 
 function fail(message) {
   console.error(`\nSetup stopped: ${message}`);

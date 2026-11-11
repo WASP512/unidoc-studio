@@ -59,6 +59,8 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
       const done = sessionStorage.getItem(UPDATED_KEY);
       if (done !== null) {
         sessionStorage.removeItem(UPDATED_KEY);
+        // Read once after hydration: browser storage does not exist on the server.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setUpdatedTo(done || "the latest version");
         setTimeout(() => alive && setUpdatedTo(""), 8000);
       }

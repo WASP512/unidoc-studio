@@ -1,25 +1,14 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+// ESLint 10 flat config. The rule sets come straight from the plugins that
+// support ESLint 10; eslint-config-next is not used because it pulls in
+// plugins (react, import, jsx-a11y) that stop at ESLint 9.
+import { defineConfig, globalIgnores } from "eslint/config";
+import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
+import next from "@next/eslint-plugin-next";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  {
-    ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-    ],
-  },
-];
-
-export default eslintConfig;
+export default defineConfig([
+  globalIgnores(["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  tseslint.configs.recommended,
+  reactHooks.configs.flat.recommended,
+  next.configs["core-web-vitals"],
+]);

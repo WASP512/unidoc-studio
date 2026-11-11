@@ -8,7 +8,7 @@
 # built next to the running one and swapped in only if it builds and starts.
 #
 # What it sets up:
-#   - Node.js 22 (NodeSource apt repository) and Chromium for the PDF export
+#   - Node.js 26 LTS (NodeSource apt repository) and Chromium for the PDF export
 #   - the app in /opt/unidoc-studio/app, built, running as user "unidoc" on 127.0.0.1:3000
 #   - Caddy on port 443 in front of it: HTTPS (self-signed) and a login
 #   - the updater behind the "Update" button in the web interface (see deploy/update.sh)
@@ -31,6 +31,8 @@ UNIT=/etc/systemd/system/unidoc-studio.service
 LOG=/var/log/unidoc-studio-install.log
 LOGIN_USER=${UNIDOC_USER:-unidoc}
 UPDATE_RUN=${UNIDOC_UPDATE_RUN:-}
+# The Node.js release line to run on. 26 is the active LTS line (supported to April 2029).
+NODE_MAJOR=26
 export DEBIAN_FRONTEND=noninteractive
 # The caller's locale (for example en_US.UTF-8 from a Proxmox host) usually does not
 # exist in a fresh container, which makes every package step print locale warnings.
@@ -73,14 +75,20 @@ say "Installing system packages" 12
 apt-get update -qq
 apt-get install -y -qq --no-install-recommends ca-certificates curl gnupg chromium fonts-liberation caddy >/dev/null
 
-say "Installing Node.js 22" 20
-if ! command -v node >/dev/null 2>&1 || ! node -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit(a>22||(a===22&&b>=6)?0:1)'; then
+say "Installing Node.js $NODE_MAJOR" 20
+# An install made on an older release line is moved to the current one here.
+NODE_LIST=/etc/apt/sources.list.d/nodesource.list
+NODE_SOURCE="deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main"
+if [ "$(cat "$NODE_LIST" 2>/dev/null || true)" != "$NODE_SOURCE" ] || [ ! -s /etc/apt/keyrings/nodesource.gpg ]; then
   install -d -m 0755 /etc/apt/keyrings
   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor --yes -o /etc/apt/keyrings/nodesource.gpg
-  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
+  echo "$NODE_SOURCE" > "$NODE_LIST"
   apt-get update -qq
-  apt-get install -y -qq nodejs >/dev/null
 fi
+# Also brings an installed Node.js up to the newest release of its line.
+apt-get install -y -qq nodejs >/dev/null
+node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= Number(process.argv[1]) ? 0 : 1)' "$NODE_MAJOR" ||
+  die "Node.js $NODE_MAJOR could not be installed (found $(node --version 2>/dev/null || echo none))."
 node --version
 
 say "Building the new version" 28
@@ -215,7 +223,7 @@ PASSWORD=${UNIDOC_PASSWORD:-}
 HASH=""
 if [ -z "$PASSWORD" ] && grep -q 'Written by provision-debian.sh' /etc/caddy/Caddyfile 2>/dev/null; then
   # Re-run (update): keep the existing login unless a new password was supplied.
-  read -r OLD_USER OLD_HASH < <(awk '/basicauth \{/ {getline; print $1, $2; exit}' /etc/caddy/Caddyfile) || true
+  read -r OLD_USER OLD_HASH < <(awk '/basic_?auth \{/ {getline; print $1, $2; exit}' /etc/caddy/Caddyfile) || true
   case "${OLD_HASH:-}" in '$2'*) LOGIN_USER=$OLD_USER; HASH=$OLD_HASH; KEPT=1 ;; esac
 fi
 if [ -z "$HASH" ] && [ -n "$UPDATE_RUN" ] && [ -z "$PASSWORD" ]; then
@@ -237,12 +245,16 @@ if [ -z "$KEEP_PROXY" ]; then
   fi
   SITES="https://$HOST"
   [ -n "$ADDR" ] && SITES="https://$ADDR, $SITES"
+  # Caddy 2.8 renamed the login directive; Debian 12 and 13 ship 2.6, which only knows the old name.
+  AUTH=basicauth
+  CADDY_VERSION=$(caddy version 2>/dev/null | awk '{print $1}' | sed 's/^v//')
+  if dpkg --compare-versions "${CADDY_VERSION:-0}" ge 2.8 2>/dev/null; then AUTH=basic_auth; fi
   CADDYFILE=$(cat <<CADDY
 # UniDoc Studio: HTTPS with a self-signed certificate and a login in front of
 # the app, which listens on 127.0.0.1:3000 only. Written by provision-debian.sh.
 $SITES {
 	tls internal
-	basicauth {
+	$AUTH {
 		$LOGIN_USER $HASH
 	}
 	reverse_proxy 127.0.0.1:3000

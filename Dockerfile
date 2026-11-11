@@ -1,6 +1,6 @@
 # Container image: Node, the built app and Chromium for PDF export.
 #   docker compose up -d --build     (see compose.yaml)
-FROM node:22-bookworm-slim AS build
+FROM node:26-trixie-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
@@ -9,7 +9,7 @@ COPY . .
 # and would otherwise download it on every container start.
 RUN npm run build && rm -rf .next/cache
 
-FROM node:22-bookworm-slim
+FROM node:26-trixie-slim
 RUN apt-get update \
   && apt-get install -y --no-install-recommends chromium fonts-liberation \
   && rm -rf /var/lib/apt/lists/*
