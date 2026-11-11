@@ -69,6 +69,8 @@ main() {
     stop "another update is already running."
   fi
 
+  # Where updates come from, for the app's "new version available" check.
+  printf 'repo=%s\nref=%s\ncustom=%s\n' "$REPO" "$REF" "${UNIDOC_ARCHIVE_URL:+1}" > "$UPD/source"
   : > "$UPD/steps"
   if [ -n "$REQUESTED" ]; then exec > "$UPD/log" 2>&1; else : > "$UPD/log"; fi
   if [ -f "$UPD/installed" ]; then FROM=$(tr -cd '0-9a-f' < "$UPD/installed" | head -c 40); fi

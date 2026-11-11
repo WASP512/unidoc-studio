@@ -22,9 +22,9 @@ const UPDATED_KEY = "unidoc-updated-to";
 const short = (sha: string) => sha.slice(0, 7);
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
-async function fetchStatus(): Promise<UpdateStatus | null> {
+async function fetchStatus(check = false): Promise<UpdateStatus | null> {
   try {
-    const res = await fetch("/api/update", { cache: "no-store", credentials: "same-origin" });
+    const res = await fetch(check ? "/api/update?check=1" : "/api/update", { cache: "no-store", credentials: "same-origin" });
     if (!res.ok) return null;
     const body = (await res.json()) as UpdateStatus;
     return typeof body?.supported === "boolean" ? body : null;
@@ -73,6 +73,12 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
         ignoreRun.current = "";
         clickedAt.current = Date.now();
         setPhase("running");
+      } else if (s.supported) {
+        // Each time the page is opened or refreshed, ask whether a newer version is waiting.
+        // The server keeps the answer for 30 minutes, so this is usually instant.
+        void fetchStatus(true).then((checked) => {
+          if (alive && checked) setInfo((current) => (current && current.run !== checked.run ? current : checked));
+        });
       }
     });
     return () => {
@@ -160,6 +166,7 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
   const percent = phase === "reloading" ? 100 : phase === "starting" || !last ? 1 : Math.min(99, Math.round((last.percent ?? 1) + creep));
   const elapsed = info.startedAt && phase === "running" ? Math.max(0, now / 1000 - info.startedAt) : 0;
   const busy = polling || phase === "reloading";
+  const waiting = info.updateAvailable && !busy && phase !== "uptodate";
 
   return (
     <>
@@ -174,11 +181,35 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
             else if (hasWork) setPhase("confirm");
             else void start();
           }}
-          className="inline-flex items-center whitespace-nowrap gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
-          title={`Install the latest version of UniDoc Studio on this server (installed: ${version})`}
+          data-update-available={waiting ? "true" : undefined}
+          className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium whitespace-nowrap transition ${
+            waiting ? "border-emerald-600 bg-emerald-600 text-white shadow-sm hover:bg-emerald-700" : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+          }`}
+          title={
+            waiting
+              ? `A new version (${short(info.latest)}) is available. Click to install it. Installed: ${version}`
+              : `Install the latest version of UniDoc Studio on this server (installed: ${version})`
+          }
         >
-          {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
-          {busy ? `Updating… ${percent}%` : "Update"}
+          {busy ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          ) : waiting ? (
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+            </span>
+          ) : (
+            <RefreshCw className="h-3.5 w-3.5" />
+          )}
+          {busy ? (
+            `Updating… ${percent}%`
+          ) : waiting ? (
+            <>
+              Update<span className="hidden lg:inline"> available</span>
+            </>
+          ) : (
+            "Update"
+          )}
         </button>
       </div>
 

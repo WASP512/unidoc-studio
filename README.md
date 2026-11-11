@@ -40,6 +40,7 @@ The same installer works on any Debian 12 or 13 machine without Proxmox: `bash d
 
 Click **Update** at the top right of the page. It shows each step and a progress bar, and the page reloads by itself when the new version is running. If the server already has the latest version it says so.
 
+- When a newer version is waiting, the button turns green and reads **Update available**. The server asks GitHub for the latest commit id when the page is opened or refreshed, at most once every 30 minutes; the request is anonymous and sends nothing about the install. To switch the check off, set `Environment=UNIDOC_UPDATE_CHECK=off` with `systemctl edit unidoc-studio.service`; the button then stays grey and still works.
 - The running version stays up while the new one is downloaded and built (about one to five minutes), then the app restarts, which takes a few seconds.
 - If the new version does not build, nothing is changed. If it builds but does not start, the previous version is put back. Either way the page says what happened.
 - The login and the HTTPS certificate are kept.

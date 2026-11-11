@@ -1,5 +1,7 @@
 /**
  * GET  /api/update — installed version and the progress of the current or last update.
+ * GET  /api/update?check=1 — the same, after asking GitHub for the latest commit if the
+ *      last answer is older than 30 minutes (server installs only).
  * POST /api/update — ask the machine's updater to install the latest version.
  *
  * The POST carries no parameters: where the update comes from is fixed in the
@@ -8,7 +10,7 @@
  */
 import { NextResponse } from "next/server";
 import { NO_STORE_HEADERS } from "@/lib/transport";
-import { readUpdateStatus, requestUpdate } from "@/lib/update-status";
+import { readUpdateStatus, refreshLatest, requestUpdate } from "@/lib/update-status";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,7 +34,8 @@ function fromOwnPage(req: Request): boolean {
   return true;
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  if (new URL(req.url).searchParams.get("check") === "1") await refreshLatest();
   return json(await readUpdateStatus());
 }
 
