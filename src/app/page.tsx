@@ -59,6 +59,7 @@ import { isSnapshot, sanitizeSnapshot } from "@/lib/normalize-common";
 import { THEMES } from "@/lib/themes";
 import { cleanConfig, DEFAULT_CONFIG, LOGO_MAX_BYTES, LOGO_TYPES } from "@/lib/report-config";
 import { SEVERITIES, severityCounts } from "@/lib/findings";
+import { UpdateControl } from "@/components/UpdateControl";
 
 /* ================================================================== defaults */
 
@@ -597,6 +598,7 @@ function TopBar({ step, canNavigate, onStep }: { step: number; canNavigate: bool
             );
           })}
         </nav>
+        <UpdateControl hasWork={canNavigate} />
       </div>
     </header>
   );

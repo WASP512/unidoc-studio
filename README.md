@@ -36,13 +36,27 @@ Defaults: next free container ID, hostname `unidoc-studio`, bridge `vmbr0`, DHCP
 
 The same installer works on any Debian 12 or 13 machine without Proxmox: `bash deploy/provision-debian.sh <source.tar.gz>` as root.
 
-To update an existing container to the latest version (the login is kept), run on the Proxmox host:
+### Updating
+
+Click **Update** at the top right of the page. It shows each step and a progress bar, and the page reloads by itself when the new version is running. If the server already has the latest version it says so.
+
+- The running version stays up while the new one is downloaded and built (about one to five minutes), then the app restarts, which takes a few seconds.
+- If the new version does not build, nothing is changed. If it builds but does not start, the previous version is put back. Either way the page says what happened.
+- The login and the HTTPS certificate are kept.
+- Reloading clears a site that is loaded in the page, so the button asks first when there is one. Save it as a snapshot to keep it.
+- The button installs whatever is on the `main` branch of this repository, as root inside the container, and anyone who has the login can click it. To follow a fork or pin a version: `systemctl edit unidoc-studio-update.service` and add `Environment=UNIDOC_REPO=owner/repo` or `Environment=UNIDOC_REF=<tag or commit>` under `[Service]`.
+
+How it works: the app runs as an unprivileged user and cannot update itself. The button creates an empty request file; a root-owned systemd path unit (`unidoc-studio-update.path`) notices it and runs `/usr/local/sbin/unidoc-studio-update` (a copy of `deploy/update.sh`), which writes its progress to `/var/lib/unidoc-studio/update/` where the app can read but not write. The app passes nothing to the updater.
+
+An install made before the button existed needs one last update by hand, on the Proxmox host (the login is kept):
 
 ```
 pct exec <CTID> -- bash -c "curl -fsSL https://raw.githubusercontent.com/WASP512/unidoc-studio/main/deploy/update.sh | bash"
 ```
 
-Tested: the in-container installer on Debian 12 and 13 containers (service start, HTTPS login, PDF export, re-run). The Proxmox part (`pct create` and friends) has only been dry-run against stand-in commands, not on a Proxmox host.
+The same command also works later as a repair: unlike the button, it reinstalls even when the version is already the latest. The button appears only on installs made by `provision-debian.sh` (Proxmox, Debian); a desktop or Docker install shows its version there and is updated by replacing the folder or rebuilding the image.
+
+Tested: the in-container installer on Debian 12 and 13 containers (service start, HTTPS login, PDF export, re-run). The update button in a Debian 13 systemd container limited to 2 GB of memory, clicked in headless Chrome through the container's own HTTPS login: update from the previous release by the command above, then by the button to a newer version, "already up to date", a version that does not build, and a version that builds but does not start (rolled back). The Proxmox part (`pct create` and friends) has been run on one Proxmox VE host (amd64, Debian 13 template) and otherwise dry-run against stand-in commands.
 
 Other commands:
 
@@ -170,6 +184,8 @@ src/
     api/mikrotik/{discover,import}   RouterOS connector routes (probe, neighbor suggestions, import)
     api/demo/route.ts                demo sites, normalized server-side (uses the OUI registry)
     api/export-pdf/route.ts          puppeteer-core → application/pdf
+    api/update/route.ts              installed version, update progress, update request (server installs)
+  components/UpdateControl.tsx       version label and the Update button with its progress dialog
   components/report/
     ReportDocument.tsx               A4 pages, chrome, all tables (vendor-aware), identification section
     NetworkTopologySection.tsx       5-lane swimlane topology, undetermined block, device table
@@ -181,6 +197,7 @@ src/
     unifi-normalize.ts / mikrotik-normalize.ts   vendor normalizers
     normalize-common.ts              sanitizer, formatters, finalizeSnapshot (KPIs + identification)
     identify.ts, oui.ts              passive device identification
+    update-status.ts                 reads the server updater's progress, files the update request
     findings.ts, findings-unifi.ts, findings-mikrotik.ts   optional security findings (checks + assembly)
     paginate.ts                      deterministic paginator (paginateSnapshot)
     strings.ts, themes.ts, markdown.tsx
