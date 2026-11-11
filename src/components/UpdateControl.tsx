@@ -9,7 +9,8 @@
  * during a run means "restarting", not "broken": polling simply carries on.
  * On installs without the updater (desktop, Docker) only the version is shown.
  */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { AlertTriangle, Check, CheckCircle2, Loader2, RefreshCw, X } from "lucide-react";
 import type { UpdateStatus } from "@/lib/update-status";
 
@@ -30,6 +31,15 @@ async function fetchStatus(): Promise<UpdateStatus | null> {
   } catch {
     return null;
   }
+}
+
+/**
+ * Renders at the end of <body>. The control sits in the page header, whose
+ * backdrop blur makes it the containing block for `position: fixed`: a dialog
+ * rendered in place would be squeezed into the 60px header and cut off.
+ */
+function Overlay({ children }: { children: ReactNode }) {
+  return typeof document === "undefined" ? null : createPortal(children, document.body);
 }
 
 export function UpdateControl({ hasWork }: { hasWork: boolean }) {
@@ -137,7 +147,7 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
   const version = `v${info.version}${info.commit ? ` · ${short(info.commit)}` : ""}`;
   if (!info.supported) {
     return (
-      <span className="text-[11px] text-slate-400 tabular-nums" title="Installed version">
+      <span className="hidden shrink-0 text-[11px] whitespace-nowrap text-slate-400 tabular-nums lg:inline" title="Installed version">
         {version}
       </span>
     );
@@ -153,8 +163,8 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
 
   return (
     <>
-      <div className="flex items-center gap-2.5">
-        <span className="text-[11px] text-slate-400 tabular-nums" title="Installed version">
+      <div className="flex shrink-0 items-center gap-2.5">
+        <span className="hidden text-[11px] whitespace-nowrap text-slate-400 tabular-nums lg:inline" title="Installed version">
           {version}
         </span>
         <button
@@ -164,8 +174,8 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
             else if (hasWork) setPhase("confirm");
             else void start();
           }}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
-          title="Install the latest version of UniDoc Studio on this server"
+          className="inline-flex items-center whitespace-nowrap gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
+          title={`Install the latest version of UniDoc Studio on this server (installed: ${version})`}
         >
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
           {busy ? `Updating… ${percent}%` : "Update"}
@@ -173,12 +183,15 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
       </div>
 
       {updatedTo && phase === "closed" && (
-        <div role="status" className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 shadow-lg">
-          <CheckCircle2 className="h-4 w-4" /> Updated to {updatedTo}
-        </div>
+        <Overlay>
+          <div role="status" className="fixed right-6 bottom-6 z-50 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 shadow-lg">
+            <CheckCircle2 className="h-4 w-4" /> Updated to {updatedTo}
+          </div>
+        </Overlay>
       )}
 
       {phase !== "closed" && !hidden && (
+        <Overlay>
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/45 p-6" role="dialog" aria-modal="true" aria-label="Update UniDoc Studio">
           <div className="max-h-[calc(100vh-3rem)] w-full max-w-[520px] overflow-y-auto rounded-xl bg-white p-6 shadow-2xl">
             {phase === "confirm" && (
@@ -292,6 +305,7 @@ export function UpdateControl({ hasWork }: { hasWork: boolean }) {
             )}
           </div>
         </div>
+        </Overlay>
       )}
     </>
   );
